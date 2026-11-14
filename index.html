@@ -68,6 +68,18 @@
   .contact span.k { display:inline-block; width:110px; font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
   .contact a { border-bottom:1px solid var(--line); transition:border-color .2s; }
   .contact a:hover { border-color:var(--accent); }
+  .contact-wrap { display:grid; grid-template-columns:1fr 1.2fr; gap:6vw; max-width:1200px; }
+  .contact-form { display:grid; gap:14px; }
+  .contact-form input, .contact-form textarea { width:100%; background:#141414; border:1px solid var(--line); color:var(--fg); font:inherit; font-size:16px; padding:14px 16px; border-radius:0; outline:none; transition:border-color .2s; }
+  .contact-form input:focus, .contact-form textarea:focus { border-color:var(--accent); }
+  .contact-form input::placeholder, .contact-form textarea::placeholder { color:var(--muted); }
+  .contact-form textarea { min-height:150px; resize:vertical; }
+  .contact-form .hp { position:absolute; left:-9999px; opacity:0; height:0; width:0; }
+  .contact-form button { justify-self:start; background:none; border:1px solid var(--accent); color:var(--fg); font:inherit; font-size:12px; letter-spacing:.3em; text-transform:uppercase; padding:15px 34px; cursor:pointer; transition:background .2s, color .2s; }
+  .contact-form button:hover { background:var(--accent); color:#0d0d0d; }
+  .contact-form button:disabled { opacity:.5; cursor:default; }
+  #form-status { font-size:15px; min-height:22px; color:var(--accent); }
+  #form-status.err { color:#d98b8b; }
   footer { padding:34px 5vw; border-top:1px solid var(--line); color:var(--muted); font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
 
   /* LIGHTBOX */
@@ -79,7 +91,7 @@
   .lb-close { top:6px; right:10px; } .lb-prev { left:6px; top:50%; } .lb-next { right:6px; top:50%; }
 
   @media (max-width:800px){
-    .about-wrap { grid-template-columns:1fr; }
+    .about-wrap, .contact-wrap { grid-template-columns:1fr; }
     nav a { margin-left:14px; font-size:11px; }
     .lang { margin-left:14px; }
     section { padding:70px 5vw; }
@@ -175,9 +187,21 @@
 <section id="contact" class="contact">
   <div class="eyebrow" data-i18n="touch">Get in touch</div>
   <h2 data-i18n="contact">Contact</h2>
-  <p><span class="k">Instagram</span><a href="https://www.instagram.com/albertojc.photo" target="_blank" rel="noopener">@albertojc.photo</a></p>
-  <p><span class="k" data-i18n="email">Email</span><a href="mailto:moments.ajc@gmail.com">moments.ajc@gmail.com</a></p>
-  <p><span class="k">Web</span><a href="https://www.albertojc.com">www.albertojc.com</a></p>
+  <div class="contact-wrap">
+    <div>
+      <p><span class="k">Instagram</span><a href="https://www.instagram.com/albertojc.photo" target="_blank" rel="noopener">@albertojc.photo</a></p>
+      <p><span class="k">Web</span><a href="https://www.albertojc.com">www.albertojc.com</a></p>
+    </div>
+    <form class="contact-form" id="contact-form" novalidate>
+      <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="text" name="name" required autocomplete="name" data-i18n-ph="f_name" placeholder="Full name">
+      <input type="tel" name="phone" autocomplete="tel" data-i18n-ph="f_phone" placeholder="Phone">
+      <input type="email" name="email" required autocomplete="email" data-i18n-ph="f_email" placeholder="Email">
+      <textarea name="message" required data-i18n-ph="f_msg" placeholder="Message"></textarea>
+      <button type="submit" id="send-btn" data-i18n="f_send">Send message</button>
+      <div id="form-status" role="status"></div>
+    </form>
+  </div>
 </section>
 
 <footer>© <span id="year"></span> Alberto JC · <span data-i18n="rights">All rights reserved</span></footer>
@@ -377,7 +401,6 @@ const PHOTOS = [
   "Europe/Germany/ALE 403_resultado.jpg",
   "Europe/Germany/ALE 406_resultado.jpg",
   "Europe/Germany/ALE 500_resultado.jpg",
-  "Europe/Germany/ALE 5000_resultado.jpg",
   "Europe/Germany/ALE 5001_resultado.jpg",
   "Europe/Germany/ALE 5003_resultado.jpg",
   "Europe/Germany/ALE 5004_resultado.jpg",
@@ -611,6 +634,8 @@ const I18N = {
     bio2: "I understand photography as a constant exploration of how light transforms spaces, reveals volumes, accentuates geometries and shapes the way we perceive the built environment.",
     years: "Years Experience", photos: "Photos Worldwide",
     touch: "Get in touch", contact: "Contact", email: "Email",
+    f_name: "Full name", f_phone: "Phone", f_email: "Email", f_msg: "Message", f_send: "Send message", f_sending: "Sending...",
+    f_ok: "Thank you! Your message has been sent.", f_err: "Something went wrong. Please try again or write to me on Instagram.", f_req: "Please fill in your name, email and message.",
     rights: "All rights reserved", empty: "No photos in this selection."
   },
   es: {
@@ -623,6 +648,8 @@ const I18N = {
     bio2: "Entiendo la fotografía como una exploración constante de cómo la luz transforma los espacios, revela los volúmenes, acentúa las geometrías y condiciona nuestra manera de percibir el entorno construido.",
     years: "Años de experiencia", photos: "Fotos por el mundo",
     touch: "Hablemos", contact: "Contacto", email: "Correo",
+    f_name: "Nombre y apellidos", f_phone: "Teléfono", f_email: "Correo electrónico", f_msg: "Comentarios", f_send: "Enviar mensaje", f_sending: "Enviando...",
+    f_ok: "¡Gracias! Tu mensaje ha sido enviado.", f_err: "Algo ha fallado. Inténtalo de nuevo o escríbeme por Instagram.", f_req: "Por favor, rellena tu nombre, correo y comentarios.",
     rights: "Todos los derechos reservados", empty: "No hay fotos en esta selección."
   }
 };
@@ -644,6 +671,7 @@ function setLang(l){
   document.documentElement.lang = l;
   document.title = T("title");
   document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = I18N[l][el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = I18N[l][el.dataset.i18nPh]; });
   document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
   render();
 }
@@ -701,6 +729,38 @@ document.addEventListener("keydown", e => {
   if(e.key === "Escape") closeLb();
   if(e.key === "ArrowLeft") openLb(current - 1);
   if(e.key === "ArrowRight") openLb(current + 1);
+});
+
+/* ---------- CONTACT FORM (sent to your email through FormSubmit) ---------- */
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/moments.ajc@gmail.com";
+$("contact-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target, st = $("form-status"), btn = $("send-btn");
+  st.classList.remove("err");
+  if(f.name.value.trim() === "" || f.email.value.trim() === "" || f.message.value.trim() === "" || !f.email.checkValidity()){
+    st.classList.add("err"); st.textContent = T("f_req"); return;
+  }
+  btn.disabled = true; st.textContent = T("f_sending");
+  try {
+    const res = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        "Full name": f.name.value.trim(),
+        "Phone": f.phone.value.trim() || "-",
+        "Email": f.email.value.trim(),
+        "Message": f.message.value.trim(),
+        "_replyto": f.email.value.trim(),
+        "_subject": "New message from albertojc.com",
+        "_template": "table",
+        "_honey": f._honey.value
+      })
+    });
+    const data = await res.json();
+    if(res.ok && String(data.success) !== "false"){ st.textContent = T("f_ok"); f.reset(); }
+    else { throw new Error("send failed"); }
+  } catch(err) { st.classList.add("err"); st.textContent = T("f_err"); }
+  btn.disabled = false;
 });
 
 $("year").textContent = new Date().getFullYear();
