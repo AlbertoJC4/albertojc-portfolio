@@ -1,294 +1,712 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alberto JC — Architectural & Landscape Photography</title>
-  <!-- Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-  <style>
-    .glass-effect {
-      background: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(12px);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alberto JC · Architectural & Landscape Photography</title>
+<meta name="description" content="Architectural and landscape photography. Light, space and geometry.">
+<style>
+  :root { --bg:#0d0d0d; --fg:#f2f0eb; --muted:#8d8a84; --line:#2a2a2a; --accent:#c9b79c; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--fg); font-family:Helvetica, Arial, sans-serif; font-weight:300; line-height:1.7; }
+  a { color:inherit; text-decoration:none; }
+
+  header { position:fixed; top:0; left:0; right:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:24px 5vw; background:linear-gradient(#0d0d0dCC,transparent); }
+  .logo { letter-spacing:.35em; text-transform:uppercase; font-size:14px; }
+  nav a { margin-left:30px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#b9b5ad; transition:color .2s; }
+  nav a:hover { color:var(--fg); }
+
+  .lang { margin-left:30px; display:inline-flex; gap:2px; }
+  .lang button { background:none; border:none; color:#8d8a84; font:inherit; font-size:12px; letter-spacing:.2em; cursor:pointer; padding:2px 6px; border-bottom:1px solid transparent; }
+  .lang button:hover { color:var(--fg); }
+  .lang button.active { color:var(--fg); border-bottom-color:var(--accent); }
+
+  /* HERO */
+  .hero { height:100vh; min-height:540px; position:relative; display:flex; align-items:flex-end; overflow:hidden; background:#111; }
+  .hero svg, .hero > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,.25), transparent 35%, #0d0d0d 100%); }
+  .hero-text { position:relative; z-index:2; padding:0 5vw 10vh; }
+  .hero h1 { font-weight:200; font-size:clamp(38px,6.5vw,92px); letter-spacing:.03em; line-height:1.05; }
+  .hero p { margin-top:22px; font-size:clamp(11px,1.3vw,14px); letter-spacing:.4em; text-transform:uppercase; color:#c4c0b8; }
+  .scroll { position:absolute; z-index:2; right:5vw; bottom:10vh; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:#c4c0b8; writing-mode:vertical-rl; }
+  .scroll::after { content:""; display:block; width:1px; height:60px; background:#c4c0b8; margin:12px auto 0; }
+
+  section { padding:110px 5vw; }
+  .eyebrow { font-size:12px; letter-spacing:.35em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+  h2 { font-weight:200; font-size:clamp(28px,3.4vw,44px); letter-spacing:.06em; margin-bottom:44px; }
+
+  /* GALLERY */
+  .filters { margin-bottom:14px; display:flex; flex-wrap:wrap; gap:8px 26px; }
+  .filters.countries { margin-bottom:44px; min-height:26px; }
+  .filters button { background:none; border:none; border-bottom:1px solid transparent; color:var(--muted); font:inherit; font-size:13px; letter-spacing:.22em; text-transform:uppercase; padding:4px 0; cursor:pointer; transition:color .2s; }
+  .filters button:hover { color:var(--fg); }
+  .filters button.active { color:var(--fg); border-bottom-color:var(--accent); }
+  .countries button { font-size:12px; letter-spacing:.16em; }
+  .grid { columns:3 320px; column-gap:14px; }
+  .grid figure { break-inside:avoid; margin-bottom:14px; position:relative; cursor:zoom-in; overflow:hidden; background:#181818; }
+  .grid img { width:100%; display:block; transition:transform .8s; }
+  .grid figure:hover img { transform:scale(1.04); }
+  .grid figcaption { position:absolute; left:0; right:0; bottom:0; padding:34px 16px 14px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; background:linear-gradient(transparent,#000000B8); opacity:0; transition:opacity .3s; }
+  .grid figure:hover figcaption { opacity:1; }
+  .empty { color:var(--muted); }
+
+  /* ABOUT */
+  .about { background:#121212; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .about-wrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.1fr; gap:6vw; align-items:center; }
+  .about-photo { aspect-ratio:4/5; background:#1b1b1b url("fotos/about.jpg") center/cover no-repeat; }
+  .about h2 { margin-bottom:10px; }
+  .about .name { font-size:20px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
+  .about p.bio { font-size:18px; color:#cfccc5; max-width:560px; }
+  .about p.bio + p.bio { margin-top:18px; }
+  .stats { display:flex; gap:56px; margin-top:44px; padding-top:34px; border-top:1px solid var(--line); }
+  .stats strong { display:block; font-weight:200; font-size:clamp(34px,4vw,52px); letter-spacing:.03em; line-height:1.1; }
+  .stats span { font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+
+  /* CONTACT */
+  .contact p { margin-bottom:10px; font-size:18px; color:#cfccc5; }
+  .contact span.k { display:inline-block; width:110px; font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+  .contact a { border-bottom:1px solid var(--line); transition:border-color .2s; }
+  .contact a:hover { border-color:var(--accent); }
+  footer { padding:34px 5vw; border-top:1px solid var(--line); color:var(--muted); font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+
+  /* LIGHTBOX */
+  #lightbox { position:fixed; inset:0; background:#000000F4; display:none; align-items:center; justify-content:center; flex-direction:column; z-index:100; padding:30px; }
+  #lightbox.open { display:flex; }
+  #lightbox img { max-width:100%; max-height:84vh; }
+  #lightbox p { margin-top:16px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+  .lb-btn { position:absolute; background:none; border:none; color:var(--fg); font-size:36px; cursor:pointer; padding:20px; }
+  .lb-close { top:6px; right:10px; } .lb-prev { left:6px; top:50%; } .lb-next { right:6px; top:50%; }
+
+  @media (max-width:800px){
+    .about-wrap { grid-template-columns:1fr; }
+    nav a { margin-left:14px; font-size:11px; }
+    .lang { margin-left:14px; }
+    section { padding:70px 5vw; }
+    .stats { gap:34px; }
+    .scroll { display:none; }
+  }
+</style>
 </head>
-<body class="bg-neutral-950 text-neutral-100 font-sans antialiased selection:bg-neutral-800 selection:text-white">
+<body>
 
-  <!-- NAVIGATION -->
-  <nav class="fixed top-0 left-0 right-0 z-40 glass-effect border-b border-neutral-800/60 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <a href="#" class="text-xl font-bold tracking-wider text-white uppercase hover:opacity-80 transition-opacity">
-        ALBERTO JC
-      </a>
-      
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-10 text-sm font-medium tracking-wide text-neutral-300">
-        <a href="#gallery" class="hover:text-white transition-colors">GALLERY</a>
-        <a href="#about" class="hover:text-white transition-colors">ABOUT</a>
-        <a href="#contact" class="hover:text-white transition-colors">CONTACT</a>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="menu-btn" class="md:hidden text-neutral-300 hover:text-white focus:outline-none">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="hidden md:hidden border-b border-neutral-800 bg-neutral-950/95 px-6 py-6 space-y-4">
-      <a href="#gallery" class="block text-neutral-300 hover:text-white text-base">GALLERY</a>
-      <a href="#about" class="block text-neutral-300 hover:text-white text-base">ABOUT</a>
-      <a href="#contact" class="block text-neutral-300 hover:text-white text-base">CONTACT</a>
-    </div>
+<header>
+  <a href="#home" class="logo">Alberto JC</a>
+  <nav>
+    <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#contact" data-i18n="nav_contact">Contact</a>
+    <span class="lang"><button data-lang="en">EN</button><button data-lang="es">ES</button></span>
   </nav>
+</header>
 
-  <!-- HERO SECTION -->
-  <section class="relative h-screen flex items-center justify-center overflow-hidden">
-    <!-- Architectural Background focusing on Light & Shadows -->
-    <img 
-      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" 
-      alt="Architectural Light and Shadow Geometry" 
-      class="absolute inset-0 w-full h-full object-cover object-center scale-105"
-    >
-    
-    <!-- Dark Gradient Overlay for Maximum Readability -->
-    <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-neutral-950/40"></div>
-    
-    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-      <p class="text-xs md:text-sm uppercase tracking-[0.35em] text-neutral-400 mb-4 font-semibold">Architectural & Landscape Photography</p>
-      <h1 class="text-4xl md:text-7xl font-light tracking-tight text-white mb-6 uppercase drop-shadow-md">
-        Light, Space & Geometry
-      </h1>
-      <p class="text-neutral-300 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed mb-8 drop-shadow">
-        Capturing structural harmony, geometric shadows, and clean lines across the globe.
-      </p>
-      <a href="#gallery" class="inline-block border border-white/30 bg-white/10 hover:bg-white hover:text-black text-white px-8 py-3 rounded-full text-xs font-semibold tracking-widest uppercase transition-all duration-300 backdrop-blur-md">
-        Explore Portfolio
-      </a>
-    </div>
+<div class="hero" id="home">
+  <!-- Built-in artwork (architecture, light and geometry). It is replaced automatically if you add fotos/cover.jpg -->
+  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1b1b1f"/><stop offset=".55" stop-color="#6b5a47"/><stop offset="1" stop-color="#d9b98a"/>
+      </linearGradient>
+      <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff3d6" stop-opacity=".55"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="slabL" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#d9d3c7"/><stop offset="1" stop-color="#8c867b"/>
+      </linearGradient>
+      <linearGradient id="slabD" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2c2a28"/><stop offset="1" stop-color="#121212"/>
+      </linearGradient>
+    </defs>
+    <rect width="1600" height="900" fill="url(#sky)"/>
+    <circle cx="1180" cy="250" r="70" fill="#fff0cf" opacity=".9"/>
+    <circle cx="1180" cy="250" r="140" fill="#fff0cf" opacity=".15"/>
+    <polygon points="1180,250 1600,900 600,900" fill="url(#beam)"/>
+    <!-- slabs -->
+    <polygon points="640,0 860,0 860,900 640,900" fill="url(#slabD)"/>
+    <polygon points="860,0 1010,60 1010,840 860,900" fill="url(#slabL)"/>
+    <polygon points="1010,60 1100,100 1100,800 1010,840" fill="#b8b1a4"/>
+    <polygon points="1100,100 1160,130 1160,770 1100,800" fill="#e8e1d2"/>
+    <polygon points="0,0 480,0 480,900 0,900" fill="#0f0f10"/>
+    <polygon points="480,0 640,0 640,900 480,900" fill="url(#slabD)"/>
+    <!-- floor and shadow -->
+    <polygon points="0,900 1600,900 1600,760 1160,770 860,900" fill="#241f1a"/>
+    <polygon points="860,900 1160,770 1600,760 1600,900" fill="#3a3027" opacity=".8"/>
+    <polygon points="1010,840 1600,900 1250,900" fill="#fff3d6" opacity=".18"/>
+    <!-- thin geometry lines -->
+    <g stroke="#f2f0eb" stroke-opacity=".28" stroke-width="1" fill="none">
+      <line x1="860" y1="0" x2="860" y2="900"/><line x1="1010" y1="60" x2="1010" y2="840"/>
+      <line x1="1100" y1="100" x2="1100" y2="800"/><line x1="860" y1="0" x2="1160" y2="130"/>
+      <line x1="860" y1="900" x2="1160" y2="770"/><line x1="480" y1="0" x2="480" y2="900"/>
+    </g>
+  </svg>
+  <img src="fotos/cover.jpg" alt="" onerror="this.remove()">
+  <div class="hero-text">
+    <h1 data-i18n="hero_title">Light, Space<br>&amp; Geometry</h1>
+    <p data-i18n="hero_sub">Architectural &amp; Landscape Photography</p>
+  </div>
+  <div class="scroll" data-i18n="scroll">Scroll</div>
+</div>
 
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-      <a href="#gallery" class="text-neutral-400 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7-7-7"/>
-        </svg>
-      </a>
-    </div>
-  </section>
+<section id="gallery">
+  <div class="eyebrow" data-i18n="portfolio">Portfolio</div>
+  <h2 data-i18n="gallery">Gallery</h2>
+  <div class="filters" id="continents"></div>
+  <div class="filters countries" id="countries"></div>
+  <div class="grid" id="grid"></div>
+</section>
 
-  <!-- GALLERY SECTION -->
-  <section id="gallery" class="py-24 max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-      <div>
-        <h2 class="text-2xl md:text-4xl font-light tracking-tight text-white mb-2">SELECTED WORKS</h2>
-        <p class="text-neutral-400 text-sm">Categorized collection of architectural visual studies.</p>
+<section id="about" class="about">
+  <div class="about-wrap">
+    <div class="about-photo" role="img" aria-label="Portrait of Alberto JC"></div>
+    <div>
+      <div class="eyebrow" data-i18n="profile">Profile</div>
+      <h2 data-i18n="about_title">About The Photographer</h2>
+      <div class="name">Alberto JC</div>
+      <p class="bio" data-i18n="bio">.</p>
+      <p class="bio" data-i18n="bio2">.</p>
+      <div class="stats">
+        <div><strong>10+</strong><span data-i18n="years">Years Experience</span></div>
+        <div><strong>1,000+</strong><span data-i18n="photos">Photos Worldwide</span></div>
       </div>
-
-      <!-- Filters -->
-      <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="filter-buttons">
-        <button data-filter="all" class="filter-btn active bg-white text-black px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">All</button>
-        <button data-filter="architecture" class="filter-btn bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">Architecture</button>
-        <button data-filter="landscape" class="filter-btn bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">Landscapes</button>
-        <button data-filter="details" class="filter-btn bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white px-5 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">Details</button>
-      </div>
-    </div>
-
-    <!-- Gallery Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
-      
-      <!-- Item 1: Architecture -->
-      <div class="gallery-item group relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 cursor-pointer" data-category="architecture" onclick="openLightbox('https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1200', 'Urban Facade Study', 'Architecture')">
-        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800" alt="Architecture" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
-          <span class="text-xs text-neutral-400 uppercase tracking-widest font-semibold mb-1">Architecture</span>
-          <h3 class="text-lg font-medium text-white">Urban Facade Study</h3>
-        </div>
-      </div>
-
-      <!-- Item 2: Landscape -->
-      <div class="gallery-item group relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 cursor-pointer" data-category="landscape" onclick="openLightbox('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200', 'Mountain Horizon', 'Landscape')">
-        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800" alt="Landscape" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
-          <span class="text-xs text-neutral-400 uppercase tracking-widest font-semibold mb-1">Landscapes</span>
-          <h3 class="text-lg font-medium text-white">Mountain Horizon</h3>
-        </div>
-      </div>
-
-      <!-- Item 3: Details -->
-      <div class="gallery-item group relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-900 cursor-pointer" data-category="details" onclick="openLightbox('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200', 'Minimalist Light Play', 'Details')">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Details" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
-          <span class="text-xs text-neutral-400 uppercase tracking-widest font-semibold mb-1">Details</span>
-          <h3 class="text-lg font-medium text-white">Minimalist Light Play</h3>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ABOUT SECTION -->
-  <section id="about" class="py-24 bg-neutral-900 border-y border-neutral-800">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-semibold">About The Photographer</p>
-        <h2 class="text-3xl md:text-5xl font-light text-white tracking-tight">Alberto JC</h2>
-        <p class="text-neutral-300 leading-relaxed font-light">
-          Specializing in architectural visual documentation, geometric perspectives, and natural landscapes. My focus centers on capturing structural harmony, light interaction, and minimalist compositions around the world.
-        </p>
-        <div class="pt-4 flex gap-8">
-          <div>
-            <span class="block text-3xl font-bold text-white">10+</span>
-            <span class="text-xs text-neutral-400 uppercase tracking-wider">Years Experience</span>
-          </div>
-          <div>
-            <span class="block text-3xl font-bold text-white">1,000+</span>
-            <span class="text-xs text-neutral-400 uppercase tracking-wider">Photos Worldwide</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Minimalist Camera Lens Graphic (No personal photo) -->
-      <div class="aspect-square rounded-lg overflow-hidden bg-neutral-950 border border-neutral-800 flex flex-col items-center justify-center p-8 text-center group">
-        <div class="w-24 h-24 rounded-full border border-neutral-700 flex items-center justify-center mb-6 group-hover:border-white transition-colors duration-500">
-          <svg class="w-10 h-10 text-neutral-400 group-hover:text-white transition-colors duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <span class="text-xs uppercase tracking-[0.25em] text-neutral-500 font-semibold mb-2">Visual Philosophy</span>
-        <p class="text-sm text-neutral-300 font-light italic">"Capturing structure, space, and tone through a refined lens."</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT SECTION -->
-  <section id="contact" class="py-24 max-w-7xl mx-auto px-6 text-center">
-    <p class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-semibold mb-3">Get In Touch</p>
-    <h2 class="text-3xl md:text-5xl font-light text-white tracking-tight mb-12">LET'S WORK TOGETHER</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-      
-      <!-- Website -->
-      <a href="https://albertojc.com" target="_blank" class="p-8 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-all group">
-        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.6 9h16.8M3.6 15h16.8"/></svg>
-        </div>
-        <h3 class="text-sm font-semibold text-neutral-400 uppercase mb-1">Website</h3>
-        <p class="text-white font-medium">albertojc.com</p>
-      </a>
-
-      <!-- Instagram -->
-      <a href="https://instagram.com/albertojc.photo" target="_blank" class="p-8 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-all group">
-        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-width="1.5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" stroke-width="1.5"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2"/></svg>
-        </div>
-        <h3 class="text-sm font-semibold text-neutral-400 uppercase mb-1">Instagram</h3>
-        <p class="text-white font-medium">@albertojc.photo</p>
-      </a>
-
-      <!-- Email -->
-      <a href="mailto:moments.ajc@gmail.com" class="p-8 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-all group">
-        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-neutral-800 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        </div>
-        <h3 class="text-sm font-semibold text-neutral-400 uppercase mb-1">Email</h3>
-        <p class="text-white font-medium">moments.ajc@gmail.com</p>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="py-8 border-t border-neutral-900 text-center text-xs text-neutral-500">
-    <p>© <script>document.write(new Date().getFullYear())</script> Alberto JC. All rights reserved.</p>
-  </footer>
-
-  <!-- LIGHTBOX MODAL -->
-  <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 p-4">
-    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-neutral-400 hover:text-white">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <div class="max-w-5xl w-full text-center">
-      <img id="lightbox-img" src="" alt="" class="max-h-[80vh] mx-auto rounded object-contain mb-4">
-      <span id="lightbox-category" class="text-xs uppercase tracking-widest text-neutral-400 font-semibold block"></span>
-      <h3 id="lightbox-title" class="text-lg font-light text-white"></h3>
     </div>
   </div>
+</section>
 
-  <!-- JAVASCRIPT FOR INTERACTIVITY -->
-  <script>
-    // Mobile Menu Toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+<section id="contact" class="contact">
+  <div class="eyebrow" data-i18n="touch">Get in touch</div>
+  <h2 data-i18n="contact">Contact</h2>
+  <p><span class="k">Instagram</span><a href="https://www.instagram.com/albertojc.photo" target="_blank" rel="noopener">@albertojc.photo</a></p>
+  <p><span class="k" data-i18n="email">Email</span><a href="mailto:moments.ajc@gmail.com">moments.ajc@gmail.com</a></p>
+  <p><span class="k">Web</span><a href="https://www.albertojc.com">www.albertojc.com</a></p>
+</section>
 
-    // Gallery Filter Logic
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item');
+<footer>© <span id="year"></span> Alberto JC · <span data-i18n="rights">All rights reserved</span></footer>
 
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => {
-          b.classList.remove('bg-white', 'text-black');
-          b.classList.add('bg-neutral-900', 'text-neutral-400', 'border-neutral-800');
-        });
-        btn.classList.add('bg-white', 'text-black');
-        btn.classList.remove('bg-neutral-900', 'text-neutral-400', 'border-neutral-800');
+<div id="lightbox">
+  <button class="lb-btn lb-close" aria-label="Close">×</button>
+  <button class="lb-btn lb-prev" aria-label="Previous">‹</button>
+  <img id="lb-img" alt="">
+  <p id="lb-cap"></p>
+  <button class="lb-btn lb-next" aria-label="Next">›</button>
+</div>
 
-        const filter = btn.getAttribute('data-filter');
-        galleryItems.forEach(item => {
-          if (filter === 'all' || item.getAttribute('data-category') === filter) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
+<script>
+/* =====================================================================
+   YOUR PHOTO LIST GOES HERE
+   One line per photo, in quotes, with a comma at the end.
+   Format:  "Continent/Country/photo-name.jpg",
+   It must match your "fotos" folder exactly (capitals and accents too).
+   The website reads the continent and country from the path.
+   (Your photos are already listed below. Add new ones the same way.)
+   ===================================================================== */
+const PHOTOS = [
+  "Africa/Morocco/MAR 100_resultado.jpg",
+  "Africa/Morocco/MAR 1000_resultado.jpg",
+  "Africa/Morocco/MAR 1001_resultado.jpg",
+  "Africa/Morocco/MAR 1002_resultado.jpg",
+  "Africa/Morocco/MAR 1003_resultado.jpg",
+  "Africa/Morocco/MAR 1004_resultado.jpg",
+  "Africa/Morocco/MAR 1005_resultado.jpg",
+  "Africa/Morocco/MAR 1006_resultado.jpg",
+  "Africa/Morocco/MAR 1007_resultado.jpg",
+  "Africa/Morocco/MAR 101_resultado.jpg",
+  "Africa/Morocco/MAR 102_resultado.jpg",
+  "Africa/Morocco/MAR 103_resultado.jpg",
+  "Africa/Morocco/MAR 104_resultado.jpg",
+  "Africa/Morocco/MAR 105_resultado.jpg",
+  "Africa/Morocco/MAR 106_resultado.jpg",
+  "Africa/Morocco/MAR 108_resultado.jpg",
+  "Africa/Morocco/MAR 109_resultado.jpg",
+  "Africa/Morocco/MAR 11_resultado.jpg",
+  "Africa/Morocco/MAR 110_resultado.jpg",
+  "Africa/Morocco/MAR 113_resultado.jpg",
+  "Africa/Morocco/MAR 5000_resultado.jpg",
+  "Africa/Morocco/MAR MK 1004_resultado.jpg",
+  "Asia/Cambodia/CAM 001_resultado.jpg",
+  "Asia/Cambodia/CAM 002_resultado.jpg",
+  "Asia/Cambodia/CAM 003_resultado.jpg",
+  "Asia/Cambodia/CAM 004_resultado.jpg",
+  "Asia/Cambodia/CAM 005_resultado.jpg",
+  "Asia/Cambodia/CAM 007_resultado.jpg",
+  "Asia/Cambodia/CAM 012_resultado.jpg",
+  "Asia/Cambodia/CAM 1000_resultado.jpg",
+  "Asia/Cambodia/CAM 10000_resultado.jpg",
+  "Asia/Hong Kong/HK 001_resultado.jpg",
+  "Asia/Hong Kong/HK 002_resultado.jpg",
+  "Asia/Hong Kong/HK 040_resultado.jpg",
+  "Asia/Hong Kong/HK 100_resultado.jpg",
+  "Asia/Hong Kong/HK 1000_resultado.jpg",
+  "Asia/Hong Kong/HK 101_resultado.jpg",
+  "Asia/Hong Kong/HK 103_resultado.jpg",
+  "Asia/Hong Kong/HK 1060_resultado.jpg",
+  "Asia/Hong Kong/HK 1070_resultado.jpg",
+  "Asia/Hong Kong/HK 1080_resultado.jpg",
+  "Asia/Hong Kong/HK 109_resultado.jpg",
+  "Asia/Hong Kong/HK 1090_resultado.jpg",
+  "Asia/Hong Kong/HK 1091_resultado.jpg",
+  "Asia/India/IND 002_resultado.jpg",
+  "Asia/India/IND 003_resultado.jpg",
+  "Asia/India/IND 004_resultado.jpg",
+  "Asia/India/IND 005_resultado.jpg",
+  "Asia/India/IND 006_resultado.jpg",
+  "Asia/India/INDIA 001_resultado.jpg",
+  "Asia/India/INDIA 006_resultado.jpg",
+  "Asia/India/INDIA 007_resultado.jpg",
+  "Asia/India/INDIA 008_resultado.jpg",
+  "Asia/India/INDIA 009_resultado.jpg",
+  "Asia/India/INDIA 010_resultado.jpg",
+  "Asia/India/INDIA 011_resultado.jpg",
+  "Asia/India/INDIA 012_resultado.jpg",
+  "Asia/India/INDIA 013_resultado.jpg",
+  "Asia/India/INDIA 014_resultado.jpg",
+  "Asia/India/INDIA 015_resultado.jpg",
+  "Asia/India/INDIA 016_resultado.jpg",
+  "Asia/Japan/JAP 8000_resultado.jpg",
+  "Asia/Japan/JAP 8001_resultado.jpg",
+  "Asia/Japan/JAP 8004_resultado.jpg",
+  "Asia/Japan/JAP 8005_resultado.jpg",
+  "Asia/Japan/JAP 9000_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 001_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 002_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 003_resultado.jpg",
+  "Asia/Japan/JAP NARA 001_resultado.jpg",
+  "Asia/Japan/JAP NARA 002_resultado.jpg",
+  "Asia/Japan/JAP TK 1000_resultado.jpg",
+  "Asia/Japan/JAP TOK 400_resultado.jpg",
+  "Asia/Macau/MACAO 1_resultado.jpg",
+  "Asia/Macau/MACAO 1000_resultado.jpg",
+  "Asia/Macau/MACAO 1001_resultado.jpg",
+  "Asia/Macau/MACAO 1006_resultado.jpg",
+  "Asia/Macau/MACAO 2_resultado.jpg",
+  "Asia/Macau/MACAO 3_resultado.jpg",
+  "Asia/Macau/MACAO 4_resultado.jpg",
+  "Asia/Malaysia/MAL  KL 002_resultado.jpg",
+  "Asia/Malaysia/MAL KL 100_resultado.jpg",
+  "Asia/Singapore/SIN 002_resultado.jpg",
+  "Asia/Singapore/SIN 004_resultado.jpg",
+  "Asia/Singapore/SIN 010_resultado.jpg",
+  "Asia/Singapore/SIN 021_resultado.jpg",
+  "Asia/Singapore/SIN 026_resultado.jpg",
+  "Asia/Singapore/SIN 029_resultado.jpg",
+  "Asia/Singapore/SIN 030_resultado.jpg",
+  "Asia/Singapore/SIN 031_resultado.jpg",
+  "Asia/Singapore/SIN 032_resultado.jpg",
+  "Asia/Singapore/SIN 040_resultado.jpg",
+  "Asia/Singapore/SIN 044_resultado.jpg",
+  "Asia/Singapore/SIN 046_resultado.jpg",
+  "Asia/Singapore/SIN 055_resultado.jpg",
+  "Asia/Singapore/SIN 060_resultado.jpg",
+  "Asia/Singapore/SIN 40_resultado.jpg",
+  "Asia/Thailand/TAI 004_resultado.jpg",
+  "Asia/Thailand/TAI 010_resultado.jpg",
+  "Asia/Thailand/TAI 014_resultado.jpg",
+  "Asia/Thailand/TAI 022_resultado.jpg",
+  "Asia/Thailand/TAI 041_resultado.jpg",
+  "Asia/Thailand/TAI 1000_resultado.jpg",
+  "Asia/Thailand/TAI 101_resultado.jpg",
+  "Asia/Thailand/TAI 102_resultado.jpg",
+  "Asia/Thailand/TAI 1020_resultado.jpg",
+  "Asia/Thailand/TAI 1050_resultado.jpg",
+  "Asia/Thailand/TAI 140_resultado.jpg",
+  "Asia/Thailand/TAI 141_resultado.jpg",
+  "Asia/Thailand/TAI 142_resultado.jpg",
+  "Asia/Thailand/TAI 144_resultado.jpg",
+  "Asia/Thailand/TAI PHUKET 010_resultado.jpg",
+  "Asia/Turkey/TUK ESTAMBUL 008_resultado.jpg",
+  "Asia/Turkey/TUR 100_resultado.jpg",
+  "Asia/Turkey/TUR EST 200_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 002_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 003_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 007_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 008_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 009_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 010_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 012_resultado.jpg",
+  "Asia/UAE/EAU 002_resultado.jpg",
+  "Asia/UAE/EAU 100_resultado.jpg",
+  "Asia/UAE/EAU 1000_resultado.jpg",
+  "Asia/UAE/EAU 10058_resultado.jpg",
+  "Asia/UAE/EAU 101_resultado.jpg",
+  "Asia/UAE/EAU 103_resultado.jpg",
+  "Asia/UAE/EAU 104_resultado.jpg",
+  "Asia/UAE/EAU 1050_resultado.jpg",
+  "Asia/UAE/EAU 1051_resultado.jpg",
+  "Asia/UAE/EAU 2004_resultado.jpg",
+  "Asia/UAE/EAU ABU 001_resultado.jpg",
+  "Asia/UAE/EAU DUBAI 001_resultado.jpg",
+  "Asia/Vietnam/VIE 004_resultado.jpg",
+  "Asia/Vietnam/VIE 008_resultado.jpg",
+  "Asia/Vietnam/VIE 009_resultado.jpg",
+  "Asia/Vietnam/VIE 012_resultado.jpg",
+  "Asia/Vietnam/VIE 014_resultado.jpg",
+  "Asia/Vietnam/VIE 016_resultado.jpg",
+  "Asia/Vietnam/VIE 017_resultado.jpg",
+  "Asia/Vietnam/VIE 019_resultado.jpg",
+  "Asia/Vietnam/VIE 021_resultado.jpg",
+  "Asia/Vietnam/VIT 002_resultado.jpg",
+  "Asia/Vietnam/VIT 020_resultado.jpg",
+  "Asia/Vietnam/VIT HANOI 001_resultado.jpg",
+  "Europe/Austria/AUS 001_resultado.jpg",
+  "Europe/Austria/AUS 002_resultado.jpg",
+  "Europe/Austria/AUS 003_resultado.jpg",
+  "Europe/Austria/AUS 004_resultado.jpg",
+  "Europe/France/FRA 001_resultado.jpg",
+  "Europe/France/FRA 002_resultado.jpg",
+  "Europe/France/FRA 003_resultado.jpg",
+  "Europe/France/FRA 004_resultado.jpg",
+  "Europe/France/FRA 005_resultado.jpg",
+  "Europe/France/FRA 1000_resultado.jpg",
+  "Europe/France/FRA DISNEY 002_resultado.jpg",
+  "Europe/France/FRA DISNEY 003_resultado.jpg",
+  "Europe/France/FRA DISNEY 01_resultado.jpg",
+  "Europe/France/FRA PAR 099_resultado.jpg",
+  "Europe/France/FRA PARIS 001_resultado.jpg",
+  "Europe/France/FRA PARIS 003_resultado.jpg",
+  "Europe/France/FRA PARIS 004_resultado.jpg",
+  "Europe/France/FRA PARIS 005_resultado.jpg",
+  "Europe/France/FRA PARIS 006_resultado.jpg",
+  "Europe/Germany/ALE 001_resultado.jpg",
+  "Europe/Germany/ALE 100_resultado.jpg",
+  "Europe/Germany/ALE 10000_resultado.jpg",
+  "Europe/Germany/ALE 101_resultado.jpg",
+  "Europe/Germany/ALE 102_resultado.jpg",
+  "Europe/Germany/ALE 400_resultado.jpg",
+  "Europe/Germany/ALE 4000_resultado.jpg",
+  "Europe/Germany/ALE 4001_resultado.jpg",
+  "Europe/Germany/ALE 401_resultado.jpg",
+  "Europe/Germany/ALE 403_resultado.jpg",
+  "Europe/Germany/ALE 406_resultado.jpg",
+  "Europe/Germany/ALE 500_resultado.jpg",
+  "Europe/Germany/ALE 5000_resultado.jpg",
+  "Europe/Germany/ALE 5001_resultado.jpg",
+  "Europe/Germany/ALE 5003_resultado.jpg",
+  "Europe/Germany/ALE 5004_resultado.jpg",
+  "Europe/Germany/ALE 501_resultado.jpg",
+  "Europe/Germany/ALE 502_resultado.jpg",
+  "Europe/Germany/ALE 503_resultado.jpg",
+  "Europe/Germany/ALE 504_resultado.jpg",
+  "Europe/Germany/ALE 505_resultado.jpg",
+  "Europe/Germany/ALE 506_resultado.jpg",
+  "Europe/Germany/ALE 507_resultado.jpg",
+  "Europe/Germany/ALE 508_resultado.jpg",
+  "Europe/Germany/ALE FRANKFURT 001_resultado.jpg",
+  "Europe/Greece/GRE ATE 100_resultado.jpg",
+  "Europe/Greece/GRE ATE 200_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 001_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 002_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 003_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 004_resultado.jpg",
+  "Europe/Greece/GRE MIK 100_resultado.jpg",
+  "Europe/Greece/GRE MIK 102_resultado.jpg",
+  "Europe/Greece/GRE MIK 500_resultado.jpg",
+  "Europe/Greece/GRE SAN 010_resultado.jpg",
+  "Europe/Greece/GRE SAN 500_resultado.jpg",
+  "Europe/Greece/GRE SAN 501_resultado.jpg",
+  "Europe/Greece/GRE SAN 502_resultado.jpg",
+  "Europe/Greece/GRE SAN 503_resultado.jpg",
+  "Europe/Greece/GRE SAN 505_resultado.jpg",
+  "Europe/Greece/GRE SANTORINI 001_resultado.jpg",
+  "Europe/Ireland/IRL 002_resultado.jpg",
+  "Europe/Ireland/IRL 003_resultado.jpg",
+  "Europe/Ireland/IRL 004_resultado.jpg",
+  "Europe/Ireland/IRL 005_resultado.jpg",
+  "Europe/Ireland/IRL 006_resultado.jpg",
+  "Europe/Ireland/IRL 007_resultado.jpg",
+  "Europe/Ireland/IRL 008_resultado.jpg",
+  "Europe/Ireland/IRL 009_resultado.jpg",
+  "Europe/Ireland/IRL 010_resultado.jpg",
+  "Europe/Ireland/IRL 011_resultado.jpg",
+  "Europe/Ireland/IRL_resultado.jpg",
+  "Europe/Italy/ITA 1000_resultado.jpg",
+  "Europe/Italy/ITA ROMA 001_resultado.jpg",
+  "Europe/Portugal/POR 10000_resultado.jpg",
+  "Europe/Portugal/POR 5000_resultado.jpg",
+  "Europe/Portugal/POR 9000_resultado.jpg",
+  "Europe/Portugal/POR AVE 103_resultado.jpg",
+  "Europe/Portugal/POR AVE 140_resultado.jpg",
+  "Europe/Portugal/POR AVE 500_resultado.jpg",
+  "Europe/Portugal/POR AVE 600_resultado.jpg",
+  "Europe/Portugal/POR AVE 601_resultado.jpg",
+  "Europe/Portugal/POR AVE 602_resultado.jpg",
+  "Europe/Portugal/POR AVE 603_resultado.jpg",
+  "Europe/Portugal/POR LISBOA 001_resultado.jpg",
+  "Europe/Portugal/POR NAZARE 001_resultado.jpg",
+  "Europe/Spain/ESP AVI 010_resultado.jpg",
+  "Europe/Spain/ESP AVI 1000_resultado.jpg",
+  "Europe/Spain/ESP AVI 103_resultado.jpg",
+  "Europe/Spain/ESP AVI 105_resultado.jpg",
+  "Europe/Spain/ESP AVI 200_resultado.jpg",
+  "Europe/Spain/ESP AVI 300_resultado.jpg",
+  "Europe/Spain/ESP AVI 400_resultado.jpg",
+  "Europe/Spain/ESP AVI 401_resultado.jpg",
+  "Europe/Spain/ESP AVILA 001_resultado.jpg",
+  "Europe/Spain/ESP AVILA 002_resultado.jpg",
+  "Europe/Spain/ESP AVILA 004_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10000 (2)_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10000_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10001_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 001_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 002_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 003_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 006_resultado.jpg",
+  "Europe/Spain/ESP BIL  040_resultado.jpg",
+  "Europe/Spain/ESP BIL 041_resultado.jpg",
+  "Europe/Spain/ESP BIL 042_resultado.jpg",
+  "Europe/Spain/ESP BIL 101_resultado.jpg",
+  "Europe/Spain/ESP BILBAO 001_resultado.jpg",
+  "Europe/Spain/ESP BURGOS 001_resultado.jpg",
+  "Europe/Spain/ESP BURGOS 002_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 001_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 002_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 003_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 004_resultado.jpg",
+  "Europe/Spain/ESP CUE 1_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 002_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 003_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 004_resultado.jpg",
+  "Europe/Spain/ESP GIJ 000_resultado.jpg",
+  "Europe/Spain/ESP GUA 004_resultado.jpg",
+  "Europe/Spain/ESP GUADALAJARA 001_resultado.jpg",
+  "Europe/Spain/ESP LA PALMAS 007_resultado.jpg",
+  "Europe/Spain/ESP LAN 1000_resultado.jpg",
+  "Europe/Spain/ESP LAN 1001_resultado.jpg",
+  "Europe/Spain/ESP LAN 1008_resultado.jpg",
+  "Europe/Spain/ESP LAN 120_resultado.jpg",
+  "Europe/Spain/ESP LAN 121_resultado.jpg",
+  "Europe/Spain/ESP LANZAROTE 001_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 001_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 002_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 003_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 006_resultado.jpg",
+  "Europe/Spain/ESP MA 2001_resultado.jpg",
+  "Europe/Spain/ESP MAD 002_resultado.jpg",
+  "Europe/Spain/ESP MAD 003_resultado.jpg",
+  "Europe/Spain/ESP MAD 004_resultado.jpg",
+  "Europe/Spain/ESP MAD 005_resultado.jpg",
+  "Europe/Spain/ESP MAD 006_resultado.jpg",
+  "Europe/Spain/ESP MAD 012_resultado.jpg",
+  "Europe/Spain/ESP MAD 018_resultado.jpg",
+  "Europe/Spain/ESP MAD 021_resultado.jpg",
+  "Europe/Spain/ESP MAD 022_resultado.jpg",
+  "Europe/Spain/ESP MAD 023_resultado.jpg",
+  "Europe/Spain/ESP MAD 024_resultado.jpg",
+  "Europe/Spain/ESP MAD 025_resultado.jpg",
+  "Europe/Spain/ESP MAD 026_resultado.jpg",
+  "Europe/Spain/ESP MAD 030_resultado.jpg",
+  "Europe/Spain/ESP MAD 031_resultado.jpg",
+  "Europe/Spain/ESP MAD 032_resultado.jpg",
+  "Europe/Spain/ESP MAD 100_resultado.jpg",
+  "Europe/Spain/ESP MAD 1000_resultado.jpg",
+  "Europe/Spain/ESP MAD 10000_resultado.jpg",
+  "Europe/Spain/ESP MAD 10001_resultado.jpg",
+  "Europe/Spain/ESP MAD 10004_resultado.jpg",
+  "Europe/Spain/ESP MAD 1001_resultado.jpg",
+  "Europe/Spain/ESP MAD 1008_resultado.jpg",
+  "Europe/Spain/ESP MAD 1010_resultado.jpg",
+  "Europe/Spain/ESP MAD 1011_resultado.jpg",
+  "Europe/Spain/ESP MAD 102_resultado.jpg",
+  "Europe/Spain/ESP MAD 103_resultado.jpg",
+  "Europe/Spain/ESP MAD 104_resultado.jpg",
+  "Europe/Spain/ESP MAD 105_resultado.jpg",
+  "Europe/Spain/ESP MAD 109_resultado.jpg",
+  "Europe/Spain/ESP MAD 110_resultado.jpg",
+  "Europe/Spain/ESP MAD 113_resultado.jpg",
+  "Europe/Spain/ESP MAD 115_resultado.jpg",
+  "Europe/Spain/ESP MAD 117_resultado.jpg",
+  "Europe/Spain/ESP MAD 12_resultado.jpg",
+  "Europe/Spain/ESP MAD 14_resultado.jpg",
+  "Europe/Spain/ESP MAD 200_resultado.jpg",
+  "Europe/Spain/ESP MAD 2000_resultado.jpg",
+  "Europe/Spain/ESP MAD 20000_resultado.jpg",
+  "Europe/Spain/ESP MAD 200004_resultado.jpg",
+  "Europe/Spain/ESP MAD 20002_resultado.jpg",
+  "Europe/Spain/ESP MAD 20003_resultado.jpg",
+  "Europe/Spain/ESP MAD 2002_resultado.jpg",
+  "Europe/Spain/ESP MAD 2003_resultado.jpg",
+  "Europe/Spain/ESP MAD 2004_resultado.jpg",
+  "Europe/Spain/ESP MAD 2005_resultado.jpg",
+  "Europe/Spain/ESP MAD 201_resultado.jpg",
+  "Europe/Spain/ESP MAD 300_resultado.jpg",
+  "Europe/Spain/ESP MAD 3000_resultado.jpg",
+  "Europe/Spain/ESP MAD 3001_resultado.jpg",
+  "Europe/Spain/ESP MAD 3004_resultado.jpg",
+  "Europe/Spain/ESP MAD 301_resultado.jpg",
+  "Europe/Spain/ESP MAD 8000_resultado.jpg",
+  "Europe/Spain/ESP MADRID 001_resultado.jpg",
+  "Europe/Spain/ESP MADRID 015_resultado.jpg",
+  "Europe/Spain/ESP MADRID 016_resultado.jpg",
+  "Europe/Spain/ESP MADRID 017_resultado.jpg",
+  "Europe/Spain/ESP MADRID 020_resultado.jpg",
+  "Europe/Spain/ESP MADRID 021_resultado.jpg",
+  "Europe/Spain/ESP MADRID 19_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 1_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 2_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 3_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 4_resultado.jpg",
+  "Europe/Spain/ESP PALMA 1_resultado.jpg",
+  "Europe/Spain/ESP SALAMANCA 001_resultado.jpg",
+  "Europe/Spain/ESP TOL 001_resultado.jpg",
+  "Europe/Spain/ESP VAL 10000_resultado.jpg",
+  "Europe/Spain/ESP VAL 101_resultado.jpg",
+  "Europe/Spain/ESP VAL 102_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 001_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 002_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 003_resultado.jpg",
+  "Europe/Spain/ESP ZAM 001_resultado.jpg",
+  "Europe/Spain/ESP ZAM 100_resultado.jpg",
+  "Europe/Spain/ESP ZAM 101_resultado.jpg",
+  "Europe/Spain/ESP ZAM 400_resultado.jpg",
+  "Europe/Spain/ESP ZAM 401_resultado.jpg",
+  "Europe/United Kingdom/UK LON 100_resultado.jpg",
+  "Europe/United Kingdom/UK LON 1000_resultado.jpg",
+  "Europe/United Kingdom/UK LON 101_resultado.jpg",
+  "Europe/United Kingdom/UK LON 104_resultado.jpg",
+  "Europe/United Kingdom/UK LON 120_resultado.jpg",
+  "Europe/United Kingdom/UK LON 121_resultado.jpg",
+  "Europe/United Kingdom/UK LON 122_resultado.jpg",
+  "North America/USA/USA NY 010_resultado.jpg",
+  "North America/USA/USA NY 053_resultado.jpg",
+  "North America/USA/USA NY 055_resultado.jpg",
+  "North America/USA/USA NY 056_resultado.jpg",
+  "North America/USA/USA NY 057_resultado.jpg",
+  "North America/USA/USA NY 059_resultado.jpg",
+  "North America/USA/USA NY 060_resultado.jpg",
+  "North America/USA/USA NY 070_resultado.jpg",
+  "South America/Colombia/COL 10000_resultado.jpg",
+  "South America/Colombia/COL CARTAGENA  001_resultado.jpg",
+  "South America/Colombia/COL CARTAGENA 005_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 001_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 002_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 004_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 006_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 007_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 010_resultado.jpg",
+  "South America/Panama/PAN PANAMA 001_resultado.jpg",
+  "South America/Panama/PAN PANAMA 002_resultado.jpg",
+  "South America/Panama/PAN PANAMA 003_resultado.jpg",
+  "South America/Panama/PAN PLAYA BLANCA 002_resultado.jpg",
+  "South America/Panama/PAN PLAYABLANCA 001_resultado.jpg"
+];
+/* ===================================================================== */
 
-    // Lightbox Logic
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const lightboxTitle = document.getElementById('lightbox-title');
-    const lightboxCategory = document.getElementById('lightbox-category');
+const BASE = "fotos/";
 
-    function openLightbox(src, title, category) {
-      lightboxImg.src = src;
-      lightboxTitle.innerText = title;
-      lightboxCategory.innerText = category;
-      lightbox.classList.remove('opacity-0', 'pointer-events-none');
-    }
+const photos = PHOTOS.map(path => {
+  const [continent, country, file] = path.split("/");
+  const title = file.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+  return { path, continent, country, title };
+});
 
-    function closeLightbox() {
-      lightbox.classList.add('opacity-0', 'pointer-events-none');
-    }
+let selContinent = "All", selCountry = "All countries", visible = [], current = 0;
 
-    // Close Lightbox on ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-  </script>
+/* ---------- LANGUAGES (EN / ES) ---------- */
+const I18N = {
+  en: {
+    title: "Alberto JC · Architectural & Landscape Photography",
+    nav_gallery: "Gallery", nav_about: "About", nav_contact: "Contact",
+    hero_title: "Light, Space<br>& Geometry", hero_sub: "Architectural & Landscape Photography", scroll: "Scroll",
+    portfolio: "Portfolio", gallery: "Gallery",
+    profile: "Profile", about_title: "About The Photographer",
+    bio: "My professional background in lighting consultancy has shaped the way I observe, interpret and experience architecture and space. My eye is particularly drawn to urban environments, geometric perspectives, architectural forms and landscapes, exploring the relationships between light, structure and visual perception.",
+    bio2: "I understand photography as a constant exploration of how light transforms spaces, reveals volumes, accentuates geometries and shapes the way we perceive the built environment.",
+    years: "Years Experience", photos: "Photos Worldwide",
+    touch: "Get in touch", contact: "Contact", email: "Email",
+    rights: "All rights reserved", empty: "No photos in this selection."
+  },
+  es: {
+    title: "Alberto JC · Fotografía de Arquitectura y Paisaje",
+    nav_gallery: "Galería", nav_about: "Sobre mí", nav_contact: "Contacto",
+    hero_title: "Luz, Espacio<br>y Geometría", hero_sub: "Fotografía de Arquitectura y Paisaje", scroll: "Desliza",
+    portfolio: "Portafolio", gallery: "Galería",
+    profile: "Perfil", about_title: "Sobre el fotógrafo",
+    bio: "Mi trayectoria profesional en el ámbito de la consultoría de iluminación ha definido mi manera de observar, interpretar y experimentar la arquitectura y el espacio. Mi mirada se siente especialmente atraída por los entornos urbanos, las perspectivas geométricas, las formas arquitectónicas y los paisajes, explorando las relaciones entre luz, estructura y percepción visual.",
+    bio2: "Entiendo la fotografía como una exploración constante de cómo la luz transforma los espacios, revela los volúmenes, acentúa las geometrías y condiciona nuestra manera de percibir el entorno construido.",
+    years: "Años de experiencia", photos: "Fotos por el mundo",
+    touch: "Hablemos", contact: "Contacto", email: "Correo",
+    rights: "Todos los derechos reservados", empty: "No hay fotos en esta selección."
+  }
+};
+const PLACES_ES = {
+  "All": "Todas", "All countries": "Todos los países",
+  "Africa": "África", "Europe": "Europa", "North America": "Norteamérica", "South America": "Sudamérica",
+  "Morocco": "Marruecos", "Cambodia": "Camboya", "Japan": "Japón", "Macau": "Macao", "Malaysia": "Malasia",
+  "Singapore": "Singapur", "Thailand": "Tailandia", "Turkey": "Turquía", "UAE": "Emiratos Árabes Unidos",
+  "France": "Francia", "Germany": "Alemania", "Greece": "Grecia", "Ireland": "Irlanda", "Italy": "Italia",
+  "Spain": "España", "United Kingdom": "Reino Unido", "USA": "EE. UU.", "Panama": "Panamá"
+};
+let lang = "en";
+const T = k => I18N[lang][k];
+const disp = name => (lang === "es" && PLACES_ES[name]) || name;
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem("lang", l); } catch(e) {}
+  document.documentElement.lang = l;
+  document.title = T("title");
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = I18N[l][el.dataset.i18n]; });
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  render();
+}
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+const $ = id => document.getElementById(id);
+const unique = arr => [...new Set(arr)].sort((a,b) => a.localeCompare(b));
+
+function makeButtons(container, items, selected, onClick){
+  container.innerHTML = "";
+  items.forEach(name => {
+    const b = document.createElement("button");
+    b.textContent = disp(name);
+    if(name === selected) b.classList.add("active");
+    b.onclick = () => onClick(name);
+    container.appendChild(b);
+  });
+}
+
+function render(){
+  makeButtons($("continents"), ["All", ...unique(photos.map(p => p.continent))], selContinent, c => {
+    selContinent = c; selCountry = "All countries"; render();
+  });
+  const countries = selContinent === "All" ? [] : unique(photos.filter(p => p.continent === selContinent).map(p => p.country));
+  makeButtons($("countries"), countries.length ? ["All countries", ...countries] : [], selCountry, c => { selCountry = c; render(); });
+
+  visible = photos.filter(p =>
+    (selContinent === "All" || p.continent === selContinent) &&
+    (selCountry === "All countries" || p.country === selCountry));
+
+  const grid = $("grid");
+  grid.innerHTML = visible.length ? "" : '<p class="empty">' + T("empty") + '</p>';
+  visible.forEach((p, i) => {
+    const f = document.createElement("figure");
+    f.innerHTML = `<img loading="lazy" src="${BASE + encodeURI(p.path)}" alt="${disp(p.country)}, ${disp(p.continent)}"><figcaption>${disp(p.country)}</figcaption>`;
+    f.onclick = () => openLb(i);
+    grid.appendChild(f);
+  });
+}
+
+function openLb(i){
+  current = (i + visible.length) % visible.length;
+  const p = visible[current];
+  $("lb-img").src = BASE + encodeURI(p.path);
+  $("lb-cap").textContent = disp(p.country) + ", " + disp(p.continent);
+  $("lightbox").classList.add("open");
+}
+const closeLb = () => $("lightbox").classList.remove("open");
+
+document.querySelector(".lb-close").onclick = closeLb;
+document.querySelector(".lb-prev").onclick = () => openLb(current - 1);
+document.querySelector(".lb-next").onclick = () => openLb(current + 1);
+$("lightbox").onclick = e => { if(e.target.id === "lightbox") closeLb(); };
+document.addEventListener("keydown", e => {
+  if(!$("lightbox").classList.contains("open")) return;
+  if(e.key === "Escape") closeLb();
+  if(e.key === "ArrowLeft") openLb(current - 1);
+  if(e.key === "ArrowRight") openLb(current + 1);
+});
+
+$("year").textContent = new Date().getFullYear();
+let saved = null;
+try { saved = localStorage.getItem("lang"); } catch(e) {}
+setLang(saved || ((navigator.language || "en").toLowerCase().startsWith("es") ? "es" : "en"));
+</script>
 </body>
 </html>
