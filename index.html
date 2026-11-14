@@ -59,7 +59,7 @@
   .about .name { font-size:20px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
   .about p.bio { font-size:18px; color:#cfccc5; max-width:560px; }
   .about p.bio + p.bio { margin-top:18px; }
-  .stats { display:flex; gap:56px; margin-top:44px; padding-top:34px; border-top:1px solid var(--line); }
+  .stats { display:flex; flex-wrap:wrap; gap:28px 56px; margin-top:44px; padding-top:34px; border-top:1px solid var(--line); }
   .stats strong { display:block; font-weight:200; font-size:clamp(34px,4vw,52px); letter-spacing:.03em; line-height:1.1; }
   .stats span { font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
 
@@ -179,6 +179,7 @@
       <div class="stats">
         <div><strong>10+</strong><span data-i18n="years">Years Experience</span></div>
         <div><strong>1,000+</strong><span data-i18n="photos">Photos Worldwide</span></div>
+        <div><strong>40+</strong><span data-i18n="visited">Countries Visited</span></div>
       </div>
     </div>
   </div>
@@ -633,7 +634,7 @@ const I18N = {
     bio: "My professional background in lighting consultancy has shaped the way I observe, interpret and experience architecture and space. My eye is particularly drawn to urban environments, geometric perspectives, architectural forms and landscapes, exploring the relationships between light, structure and visual perception.",
     bio2: "I understand photography as a constant exploration of how light transforms spaces, reveals volumes, accentuates geometries and shapes the way we perceive the built environment.",
     years: "Years Experience", photos: "Photos Worldwide",
-    touch: "Get in touch", contact: "Contact", email: "Email",
+    visited: "Countries Visited", touch: "Get in touch", contact: "Contact", email: "Email",
     f_name: "Full name", f_phone: "Phone", f_email: "Email", f_msg: "Message", f_send: "Send message", f_sending: "Sending...",
     f_ok: "Thank you! Your message has been sent.", f_err: "Something went wrong. Please try again or write to me on Instagram.", f_req: "Please fill in your name, email and message.",
     rights: "All rights reserved", empty: "No photos in this selection."
@@ -647,7 +648,7 @@ const I18N = {
     bio: "Mi trayectoria profesional en el ámbito de la consultoría de iluminación ha definido mi manera de observar, interpretar y experimentar la arquitectura y el espacio. Mi mirada se siente especialmente atraída por los entornos urbanos, las perspectivas geométricas, las formas arquitectónicas y los paisajes, explorando las relaciones entre luz, estructura y percepción visual.",
     bio2: "Entiendo la fotografía como una exploración constante de cómo la luz transforma los espacios, revela los volúmenes, acentúa las geometrías y condiciona nuestra manera de percibir el entorno construido.",
     years: "Años de experiencia", photos: "Fotos por el mundo",
-    touch: "Hablemos", contact: "Contacto", email: "Correo",
+    visited: "Países visitados", touch: "Hablemos", contact: "Contacto", email: "Correo",
     f_name: "Nombre y apellidos", f_phone: "Teléfono", f_email: "Correo electrónico", f_msg: "Comentarios", f_send: "Enviar mensaje", f_sending: "Enviando...",
     f_ok: "¡Gracias! Tu mensaje ha sido enviado.", f_err: "Algo ha fallado. Inténtalo de nuevo o escríbeme por Instagram.", f_req: "Por favor, rellena tu nombre, correo y comentarios.",
     rights: "Todos los derechos reservados", empty: "No hay fotos en esta selección."
