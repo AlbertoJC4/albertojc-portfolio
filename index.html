@@ -54,7 +54,7 @@
   /* ABOUT */
   .about { background:#121212; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   .about-wrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.1fr; gap:6vw; align-items:center; }
-  .about-photo { aspect-ratio:4/5; background:#1b1b1b url("fotos/about.jpg") center/cover no-repeat; }
+  .about-photo { aspect-ratio:4/5; background:#1b1b1b url("about.jpg") center/cover no-repeat; }
   .about h2 { margin-bottom:10px; }
   .about .name { font-size:20px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
   .about p.bio { font-size:18px; color:#cfccc5; max-width:560px; }
@@ -101,7 +101,7 @@
 </header>
 
 <div class="hero" id="home">
-  <!-- Built-in artwork (architecture, light and geometry). It is replaced automatically if you add fotos/cover.jpg -->
+  <!-- Built-in artwork (architecture, light and geometry). It is replaced automatically if you add cover.jpg -->
   <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -139,7 +139,7 @@
       <line x1="860" y1="900" x2="1160" y2="770"/><line x1="480" y1="0" x2="480" y2="900"/>
     </g>
   </svg>
-  <img src="fotos/cover.jpg" alt="" onerror="this.remove()">
+  <img src="cover.jpg" alt="" onerror="this.remove()">
   <div class="hero-text">
     <h1 data-i18n="hero_title">Light, Space<br>&amp; Geometry</h1>
     <p data-i18n="hero_sub">Architectural &amp; Landscape Photography</p>
@@ -195,7 +195,7 @@
    YOUR PHOTO LIST GOES HERE
    One line per photo, in quotes, with a comma at the end.
    Format:  "Continent/Country/photo-name.jpg",
-   It must match your "fotos" folder exactly (capitals and accents too).
+   It must match your folders exactly (capitals and accents too).
    The website reads the continent and country from the path.
    (Your photos are already listed below. Add new ones the same way.)
    ===================================================================== */
@@ -589,7 +589,7 @@ const PHOTOS = [
 ];
 /* ===================================================================== */
 
-const BASE = "fotos/";
+const BASE = "";
 
 const photos = PHOTOS.map(path => {
   const [continent, country, file] = path.split("/");
