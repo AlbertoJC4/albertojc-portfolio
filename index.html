@@ -3,209 +3,693 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alberto JC · Architectural & Landscape Photography</title>
-<meta name="description" content="Architectural and landscape photography. Light, space and geometry.">
+<title>Alberto JC · Light, Space & Geometry</title>
+<meta name="description" content="Architectural and landscape photography. Light that creates sensations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Plus+Jakarta+Sans:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#050505; --fg:#f4f4f0; --muted:#77746e; --line:#1f1f1f; --accent:#d4c3a3; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--fg); font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-weight:300; line-height:1.6; selection-background-color: var(--accent); selection-color: #000; }
-  a { color:inherit; text-decoration:none; }
+  :root {
+    --bg: #050505;
+    --surface: #0b0b0b;
+    --fg: #f3f1ec;
+    --muted: #78756e;
+    --line: rgba(255, 255, 255, 0.08);
+    --accent: #d4b886;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
 
-  /* HEADER ESTILO MENÚ FLOTANTE MINIMALISTA */
-  header { position:fixed; top:0; left:0; right:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:30px 6vw; background:linear-gradient(to bottom, rgba(5,5,5,0.9), transparent); backdrop-filter: blur(6px); }
-  .logo { letter-spacing:.4em; text-transform:uppercase; font-size:13px; font-weight: 400; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: #050505; }
+  a { color: inherit; text-decoration: none; }
+
+  /* FOCO DE LUZ AMBIENTAL QUE SIGUE AL RATÓN */
+  .ambient-light {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+    background: radial-gradient(750px circle at var(--x, 50vw) var(--y, 50vh), rgba(212, 184, 134, 0.045), transparent 65%);
+    transition: opacity 0.5s;
+  }
+
+  /* NAVEGACIÓN ARQUITECTÓNICA */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 6vw;
+    transition: background 0.4s, padding 0.4s, border-color 0.4s;
+    border-bottom: 1px solid transparent;
+  }
+  header.scrolled {
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(14px);
+    padding: 18px 6vw;
+    border-bottom-color: var(--line);
+  }
+  .logo {
+    font-size: 13px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
   nav { display: flex; align-items: center; }
-  nav a { margin-left:35px; font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:#999; transition:color .3s; }
-  nav a:hover { color:var(--fg); }
+  nav a {
+    margin-left: 38px;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    position: relative;
+    transition: color 0.3s;
+  }
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  nav a:hover { color: var(--fg); }
+  nav a:hover::after { width: 100%; }
 
-  .lang { margin-left:35px; display:inline-flex; gap:6px; }
-  .lang button { background:none; border:none; color:#777; font:inherit; font-size:11px; letter-spacing:.2em; cursor:pointer; padding:2px 4px; transition: color .3s; }
-  .lang button:hover { color:var(--fg); }
-  .lang button.active { color:var(--fg); font-weight: 500; border-bottom: 1px solid var(--accent); }
+  .lang {
+    margin-left: 38px;
+    padding-left: 24px;
+    border-left: 1px solid var(--line);
+    display: inline-flex;
+    gap: 8px;
+  }
+  .lang button {
+    background: none; border: none;
+    color: var(--muted);
+    font: inherit; font-size: 11px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    padding: 2px 4px;
+    transition: color 0.3s;
+  }
+  .lang button:hover { color: var(--fg); }
+  .lang button.active { color: var(--accent); font-weight: 400; }
 
-  /* HERO CINEMATOGRÁFICO */
-  .hero { height:100vh; min-height:600px; position:relative; display:flex; align-items:flex-end; overflow:hidden; background:#000; }
-  .hero svg, .hero > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter: brightness(0.85); }
-  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, #050505 0%, rgba(5,5,5,0.3) 50%, transparent 100%); }
-  .hero-text { position:relative; z-index:2; padding:0 6vw 12vh; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; }
-  .hero h1 { font-weight:200; font-size:clamp(36px, 6vw, 84px); letter-spacing:-0.02em; line-height:1.05; }
-  .hero p { font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom: 10px; }
-  .scroll { font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); writing-mode:vertical-rl; display: flex; align-items: center; gap: 15px; }
-  .scroll::after { content:""; display:block; width:1px; height:40px; background:var(--muted); }
+  /* HERO MONUMENTAL */
+  .hero {
+    height: 100vh;
+    min-height: 640px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: #000;
+  }
+  .hero-media {
+    position: absolute;
+    inset: -3%;
+    width: 106%;
+    height: 106%;
+    animation: slowBreath 26s ease-in-out infinite alternate;
+  }
+  @keyframes slowBreath {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.05) translate(-1%, -1%); }
+  }
+  .hero-media svg, .hero-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: contrast(1.06) brightness(0.88);
+  }
+  .hero-media img { z-index: 1; }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      to top,
+      var(--bg) 2%,
+      rgba(5, 5, 5, 0.45) 45%,
+      rgba(5, 5, 5, 0.25) 100%
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 0 6vw 11vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .hero-kicker {
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: block;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(44px, 7vw, 104px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .scroll-cue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 64px;
+    background: var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: "";
+    position: absolute;
+    top: -100%; left: 0;
+    width: 100%; height: 100%;
+    background: var(--accent);
+    animation: dropLine 2.4s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  }
+  @keyframes dropLine {
+    0% { top: -100%; }
+    50% { top: 0%; }
+    100% { top: 100%; }
+  }
 
-  section { padding:130px 6vw; }
-  .eyebrow { font-size:11px; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
-  h2 { font-weight:200; font-size:clamp(26px,3vw,40px); letter-spacing:.02em; margin-bottom:40px; }
+  /* MANIFIESTO DE LUZ */
+  .manifesto {
+    padding: 130px 6vw 90px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4vw;
+    align-items: start;
+  }
+  .manifesto-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 12px;
+  }
+  .manifesto blockquote {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(26px, 3.2vw, 44px);
+    line-height: 1.3;
+    color: var(--fg);
+  }
 
-  /* FILTROS Y GALERÍA ESTILO GRID ELEGANTE */
-  .filters-wrapper { margin-bottom: 50px; border-bottom: 1px solid var(--line); padding-bottom: 25px; }
-  .filters { display:flex; flex-wrap:wrap; gap:10px 30px; }
-  .filters.countries { margin-top: 15px; margin-bottom:0; min-height:20px; }
-  .filters button { background:none; border:none; color:var(--muted); font:inherit; font-size:12px; letter-spacing:.2em; text-transform:uppercase; padding:4px 0; cursor:pointer; transition:color .3s; }
-  .filters button:hover { color:var(--fg); }
-  .filters button.active { color:var(--fg); color: var(--accent); }
-  .countries button { font-size:11px; letter-spacing:.15em; }
+  /* SECCIONES GENERALES */
+  section { padding: 130px 6vw; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(34px, 4.2vw, 56px);
+    line-height: 1.05;
+  }
+  .counter-badge {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 6px;
+  }
 
-  .grid { columns:3 300px; column-gap:16px; }
-  .grid figure { break-inside:avoid; margin-bottom:16px; position:relative; cursor:zoom-in; overflow:hidden; background:#111; border-radius: 2px; }
-  .grid img { width:100%; display:block; transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s; filter: grayscale(15%); }
-  .grid figure:hover img { transform:scale(1.03); filter: grayscale(0%); }
-  .grid figcaption { position:absolute; left:0; right:0; bottom:0; padding:40px 20px 16px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; background:linear-gradient(transparent, rgba(0,0,0,0.85)); opacity:0; transition:opacity .3s ease; }
-  .grid figure:hover figcaption { opacity:1; }
-  .empty { color:var(--muted); font-size: 14px; letter-spacing: 0.1em; }
+  /* FILTROS DE ARCHIVO */
+  .archive-controls {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+    margin-bottom: 56px;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+  }
+  .filters.countries {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+  }
+  .filters button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .filters button:hover { color: var(--fg); }
+  .filters button.active {
+    color: var(--accent);
+  }
+  .filters button.active::before {
+    content: "— ";
+  }
+  .countries button { font-size: 11px; letter-spacing: 0.18em; }
 
-  /* ABOUT / PERFIL */
-  .about { background:#080808; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .about-wrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.2fr; gap:8vw; align-items:center; }
-  .about-photo { aspect-ratio:4/5; background:#141414 url("about.jpg") center/cover no-repeat; filter: grayscale(20%); }
-  .about h2 { margin-bottom:12px; }
-  .about .name { font-size:14px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:32px; }
-  .about p.bio { font-size:16px; color:#bbb; max-width:520px; line-height: 1.8; }
-  .about p.bio + p.bio { margin-top:20px; }
-  .stats { display:flex; flex-wrap:wrap; gap:30px 60px; margin-top:50px; padding-top:35px; border-top:1px solid var(--line); }
-  .stats strong { display:block; font-weight:200; font-size:clamp(32px,3.5vw,48px); letter-spacing:-0.02em; }
-  .stats span { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+  /* GALERÍA DE CATÁLOGO */
+  .grid {
+    columns: 3 340px;
+    column-gap: 24px;
+  }
+  .grid figure {
+    break-inside: avoid;
+    margin-bottom: 28px;
+    position: relative;
+    cursor: zoom-in;
+    overflow: hidden;
+    background: var(--surface);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .grid figure.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .img-wrap {
+    overflow: hidden;
+    position: relative;
+  }
+  .grid img {
+    width: 100%;
+    display: block;
+    transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+    filter: brightness(0.94);
+  }
+  .grid figure:hover img {
+    transform: scale(1.04);
+    filter: brightness(1.03);
+  }
+  .grid figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 4px 4px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .grid figure:hover figcaption {
+    color: var(--fg);
+    border-bottom-color: var(--line);
+  }
+  .fig-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .empty { color: var(--muted); font-size: 14px; letter-spacing: 0.15em; }
+
+  /* ABOUT / EL AUTOR */
+  .about {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .about-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.2fr;
+    gap: 8vw;
+    align-items: center;
+  }
+  .about-frame {
+    position: relative;
+    padding: 16px;
+    border: 1px solid var(--line);
+  }
+  .about-photo {
+    aspect-ratio: 4/5;
+    background: #161616 url("about.jpg") center/cover no-repeat;
+    filter: contrast(1.05) grayscale(15%);
+  }
+  .about h2 { margin-bottom: 10px; }
+  .about .role {
+    font-size: 12px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 34px;
+  }
+  .about p.bio {
+    font-size: 16px;
+    color: #c2bfb8;
+    line-height: 1.85;
+    max-width: 560px;
+  }
+  .about p.bio + p.bio { margin-top: 20px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 52px;
+    padding-top: 36px;
+    border-top: 1px solid var(--line);
+  }
+  .stats strong {
+    display: block;
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(36px, 4vw, 54px);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stats span {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
   /* CONTACTO */
-  .contact-wrap { display:grid; grid-template-columns:1fr 1.3fr; gap:8vw; max-width:1200px; }
-  .contact p { margin-bottom:15px; font-size:16px; color:#bbb; }
-  .contact span.k { display:inline-block; width:110px; font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
-  .contact a { border-bottom:1px solid var(--line); transition:border-color .3s; padding-bottom: 2px; }
-  .contact a:hover { border-color:var(--accent); color:var(--fg); }
-  
-  .contact-form { display:grid; gap:16px; }
-  .contact-form input, .contact-form textarea { width:100%; background:#0f0f0f; border:1px solid var(--line); color:var(--fg); font:inherit; font-size:14px; padding:16px 18px; border-radius:0; outline:none; transition:border-color .3s; }
-  .contact-form input:focus, .contact-form textarea:focus { border-color:var(--accent); }
-  .contact-form input::placeholder, .contact-form textarea::placeholder { color:#555; }
-  .contact-form textarea { min-height:160px; resize:vertical; }
-  .contact-form .hp { position:absolute; left:-9999px; opacity:0; height:0; width:0; }
-  .contact-form button { justify-self:start; background:none; border:1px solid var(--accent); color:var(--fg); font:inherit; font-size:11px; letter-spacing:.3em; text-transform:uppercase; padding:16px 36px; cursor:pointer; transition:background .3s, color .3s; }
-  .contact-form button:hover { background:var(--accent); color:#000; }
-  .contact-form button:disabled { opacity:.4; cursor:default; }
-  #form-status { font-size:14px; min-height:20px; color:var(--accent); }
-  #form-status.err { color:#e07a7a; }
-  
-  footer { padding:40px 6vw; border-top:1px solid var(--line); color:var(--muted); font-size:11px; letter-spacing:.2em; text-transform:uppercase; display: flex; justify-content: space-between; }
+  .contact-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 8vw;
+  }
+  .contact-item {
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  .contact-item:last-child { border-bottom: 1px solid var(--line); }
+  .contact-item span.k {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .contact-item a {
+    color: var(--fg);
+    transition: color 0.3s;
+  }
+  .contact-item a:hover { color: var(--accent); }
 
-  /* LIGHTBOX MODERNO */
-  #lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.96); backdrop-filter: blur(10px); display:none; align-items:center; justify-content:center; flex-direction:column; z-index:100; padding:40px; }
-  #lightbox.open { display:flex; }
-  #lightbox img { max-width:90vw; max-height:80vh; object-fit: contain; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-  #lightbox p { margin-top:20px; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
-  .lb-btn { position:absolute; background:none; border:none; color:#aaa; font-size:32px; cursor:pointer; padding:20px; transition: color 0.3s; }
-  .lb-btn:hover { color: var(--fg); }
-  .lb-close { top:20px; right:25px; font-size: 40px; } 
-  .lb-prev { left:20px; top:50%; transform: translateY(-50%); } 
-  .lb-next { right:20px; top:50%; transform: translateY(-50%); }
+  .contact-form { display: grid; gap: 22px; }
+  .field { position: relative; }
+  .contact-form input, .contact-form textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg);
+    font: inherit;
+    font-size: 15px;
+    padding: 14px 4px;
+    outline: none;
+    transition: border-color 0.4s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus {
+    border-bottom-color: var(--accent);
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder {
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    font-size: 13px;
+  }
+  .contact-form textarea { min-height: 130px; resize: vertical; }
+  .contact-form .hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; }
+  .contact-form button {
+    justify-self: start;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--fg);
+    font: inherit;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    padding: 18px 42px;
+    cursor: pointer;
+    transition: background 0.4s, color 0.4s;
+  }
+  .contact-form button:hover {
+    background: var(--accent);
+    color: #050505;
+  }
+  .contact-form button:disabled { opacity: 0.4; cursor: default; }
+  #form-status { font-size: 14px; min-height: 22px; color: var(--accent); }
+  #form-status.err { color: #d97b7b; }
 
-  @media (max-width:850px){
-    .about-wrap, .contact-wrap, .hero-text { grid-template-columns:1fr; flex-direction: column; align-items: flex-start; gap: 40px; }
-    nav a { margin-left:15px; font-size:10px; }
-    .lang { margin-left:15px; }
-    section { padding:80px 6vw; }
-    .scroll { display:none; }
+  footer {
+    padding: 40px 6vw;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* LIGHTBOX DE SALA DE EXPOSICIONES */
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 3, 3, 0.97);
+    backdrop-filter: blur(16px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 200;
+    padding: 40px;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img {
+    max-width: 88vw;
+    max-height: 78vh;
+    object-fit: contain;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85);
+  }
+  .lb-meta {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lb-meta span.lb-index {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--accent);
+  }
+  .lb-btn {
+    position: absolute;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 30px;
+    font-weight: 200;
+    cursor: pointer;
+    padding: 24px;
+    transition: color 0.3s, transform 0.3s;
+  }
+  .lb-btn:hover { color: var(--accent); }
+  .lb-close { top: 16px; right: 20px; font-size: 38px; }
+  .lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+
+  @media (max-width: 900px) {
+    .manifesto, .about-wrap, .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .hero-content { flex-direction: column; align-items: flex-start; gap: 30px; }
+    .scroll-cue { display: none; }
+    nav a { margin-left: 16px; font-size: 10px; letter-spacing: 0.18em; }
+    .lang { margin-left: 16px; padding-left: 12px; }
+    section { padding: 90px 6vw; }
+    .stats { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
 <body>
 
-<header>
+<div class="ambient-light" id="ambient"></div>
+
+<header id="navbar">
   <a href="#home" class="logo">Alberto JC</a>
   <nav>
-    <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
-    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="#gallery" data-i18n="nav_gallery">Archive</a>
+    <a href="#about" data-i18n="nav_about">Philosophy</a>
     <a href="#contact" data-i18n="nav_contact">Contact</a>
     <span class="lang"><button data-lang="en">EN</button><button data-lang="es">ES</button></span>
   </nav>
 </header>
 
 <div class="hero" id="home">
-  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <defs>
-      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#121215"/><stop offset=".55" stop-color="#4a3f33"/><stop offset="1" stop-color="#b59a72"/>
-      </linearGradient>
-      <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#fff3d6" stop-opacity=".4"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="slabL" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#c5beb2"/><stop offset="1" stop-color="#7a7469"/>
-      </linearGradient>
-      <linearGradient id="slabD" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#22201e"/><stop offset="1" stop-color="#0a0a0a"/>
-      </linearGradient>
-    </defs>
-    <rect width="1600" height="900" fill="url(#sky)"/>
-    <circle cx="1180" cy="250" r="70" fill="#fff0cf" opacity=".85"/>
-    <circle cx="1180" cy="250" r="140" fill="#fff0cf" opacity=".1"/>
-    <polygon points="1180,250 1600,900 600,900" fill="url(#beam)"/>
-    <polygon points="640,0 860,0 860,900 640,900" fill="url(#slabD)"/>
-    <polygon points="860,0 1010,60 1010,840 860,900" fill="url(#slabL)"/>
-    <polygon points="1010,60 1100,100 1100,800 1010,840" fill="#a39c90"/>
-    <polygon points="1100,100 1160,130 1160,770 1100,800" fill="#d4cbb8"/>
-    <polygon points="0,0 480,0 480,900 0,900" fill="#08080a"/>
-    <polygon points="480,0 640,0 640,900 480,900" fill="url(#slabD)"/>
-    <polygon points="0,900 1600,900 1600,760 1160,770 860,900" fill="#1a1612"/>
-    <polygon points="860,900 1160,770 1600,760 1600,900" fill="#2d251e" opacity=".7"/>
-    <g stroke="#f4f4f0" stroke-opacity=".2" stroke-width="1" fill="none">
-      <line x1="860" y1="0" x2="860" y2="900"/><line x1="1010" y1="60" x2="1010" y2="840"/>
-      <line x1="1100" y1="100" x2="1100" y2="800"/><line x1="860" y1="0" x2="1160" y2="130"/>
-      <line x1="860" y1="900" x2="1160" y2="770"/><line x1="480" y1="0" x2="480" y2="900"/>
-    </g>
-  </svg>
-  <img src="cover.jpg" alt="" onerror="this.remove()">
-  <div class="hero-text">
+  <div class="hero-media">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#121215"/><stop offset=".55" stop-color="#4a3f33"/><stop offset="1" stop-color="#b59a72"/>
+        </linearGradient>
+        <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff3d6" stop-opacity=".4"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="slabL" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#c5beb2"/><stop offset="1" stop-color="#7a7469"/>
+        </linearGradient>
+        <linearGradient id="slabD" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#22201e"/><stop offset="1" stop-color="#0a0a0a"/>
+        </linearGradient>
+      </defs>
+      <rect width="1600" height="900" fill="url(#sky)"/>
+      <circle cx="1180" cy="250" r="70" fill="#fff0cf" opacity=".85"/>
+      <polygon points="1180,250 1600,900 600,900" fill="url(#beam)"/>
+      <polygon points="640,0 860,0 860,900 640,900" fill="url(#slabD)"/>
+      <polygon points="860,0 1010,60 1010,840 860,900" fill="url(#slabL)"/>
+      <polygon points="0,0 480,0 480,900 0,900" fill="#08080a"/>
+    </svg>
+    <img src="cover_2.jpg" alt="Light, Space & Geometry" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='cover.jpg';}else{this.remove();}">
+  </div>
+  <div class="hero-content">
     <div>
-      <p data-i18n="hero_sub">Architectural &amp; Landscape Photography</p>
-      <h1 data-i18n="hero_title">Light, Space<br>&amp; Geometry</h1>
+      <span class="hero-kicker" data-i18n="hero_sub">Architectural &amp; Landscape Photography</span>
+      <h1 data-i18n="hero_title">Light, Space<br><em>&amp;</em> Geometry</h1>
     </div>
-    <div class="scroll" data-i18n="scroll">Scroll</div>
+    <div class="scroll-cue">
+      <span data-i18n="scroll">Explore</span>
+      <div class="scroll-line"></div>
+    </div>
   </div>
 </div>
 
+<div class="manifesto">
+  <div class="manifesto-label" data-i18n="manifesto_tag">01 / Essence</div>
+  <blockquote data-i18n="manifesto_quote">
+    “Light is the material that sculpts emotion.”
+  </blockquote>
+</div>
+
 <section id="gallery">
-  <div class="eyebrow" data-i18n="portfolio">Portfolio</div>
-  <h2 data-i18n="gallery">Gallery</h2>
-  <div class="filters-wrapper">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow" data-i18n="portfolio">02 / Selected Works</div>
+      <h2 data-i18n="gallery">Visual Archive</h2>
+    </div>
+    <div class="counter-badge" id="photo-count"></div>
+  </div>
+
+  <div class="archive-controls">
     <div class="filters" id="continents"></div>
     <div class="filters countries" id="countries"></div>
   </div>
+
   <div class="grid" id="grid"></div>
 </section>
 
 <section id="about" class="about">
   <div class="about-wrap">
-    <div class="about-photo" role="img" aria-label="Portrait of Alberto JC"></div>
+    <div class="about-frame">
+      <div class="about-photo" role="img" aria-label="Portrait of Alberto JC"></div>
+    </div>
     <div>
-      <div class="eyebrow" data-i18n="profile">Profile</div>
-      <h2 data-i18n="about_title">About The Photographer</h2>
-      <div class="name">Alberto JC</div>
+      <div class="eyebrow" data-i18n="profile">03 / The Author</div>
+      <h2 data-i18n="about_title">Alberto JC</h2>
+      <div class="role" data-i18n="role">Lighting Consultant &amp; Photographer</div>
       <p class="bio" data-i18n="bio">.</p>
       <p class="bio" data-i18n="bio2">.</p>
       <div class="stats">
         <div><strong>10+</strong><span data-i18n="years">Years Experience</span></div>
-        <div><strong>1,000+</strong><span data-i18n="photos">Photos Worldwide</span></div>
-        <div><strong>40+</strong><span data-i18n="visited">Countries Visited</span></div>
+        <div><strong>1,000+</strong><span data-i18n="photos">Captured Spaces</span></div>
+        <div><strong>40+</strong><span data-i18n="visited">Countries Explored</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <section id="contact" class="contact">
-  <div class="eyebrow" data-i18n="touch">Get in touch</div>
-  <h2 data-i18n="contact">Contact</h2>
   <div class="contact-wrap">
     <div>
-      <p><span class="k">Instagram</span><a href="https://www.instagram.com/albertojc.photo" target="_blank" rel="noopener">@albertojc.photo</a></p>
-      <p><span class="k">Web</span><a href="https://www.albertojc.com">www.albertojc.com</a></p>
+      <div class="eyebrow" data-i18n="touch">04 / Inquiries</div>
+      <h2 data-i18n="contact">Contact</h2>
+      <div class="contact-item" style="margin-top: 30px;">
+        <span class="k">Instagram</span>
+        <a href="https://www.instagram.com/albertojc.photo" target="_blank" rel="noopener">@albertojc.photo ↗</a>
+      </div>
+      <div class="contact-item">
+        <span class="k">Web</span>
+        <a href="https://www.albertojc.com">www.albertojc.com</a>
+      </div>
     </div>
     <form class="contact-form" id="contact-form" novalidate>
       <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <input type="text" name="name" required autocomplete="name" data-i18n-ph="f_name" placeholder="Full name">
-      <input type="tel" name="phone" autocomplete="tel" data-i18n-ph="f_phone" placeholder="Phone">
-      <input type="email" name="email" required autocomplete="email" data-i18n-ph="f_email" placeholder="Email">
-      <textarea name="message" required data-i18n-ph="f_msg" placeholder="Message"></textarea>
+      <div class="field"><input type="text" name="name" required autocomplete="name" data-i18n-ph="f_name" placeholder="Full name"></div>
+      <div class="field"><input type="tel" name="phone" autocomplete="tel" data-i18n-ph="f_phone" placeholder="Phone (optional)"></div>
+      <div class="field"><input type="email" name="email" required autocomplete="email" data-i18n-ph="f_email" placeholder="Email address"></div>
+      <div class="field"><textarea name="message" required data-i18n-ph="f_msg" placeholder="Tell me about your project or inquiry..."></textarea></div>
       <button type="submit" id="send-btn" data-i18n="f_send">Send message</button>
       <div id="form-status" role="status"></div>
     </form>
@@ -213,7 +697,7 @@
 </section>
 
 <footer>
-  <span>© <span id="year"></span> Alberto JC</span>
+  <span>© <span id="year"></span> Alberto JC · Architectural &amp; Landscape Photography</span>
   <span data-i18n="rights">All rights reserved</span>
 </footer>
 
@@ -221,7 +705,10 @@
   <button class="lb-btn lb-close" aria-label="Close">×</button>
   <button class="lb-btn lb-prev" aria-label="Previous">‹</button>
   <img id="lb-img" alt="">
-  <p id="lb-cap"></p>
+  <div class="lb-meta">
+    <span class="lb-index" id="lb-num">001</span>
+    <span id="lb-cap"></span>
+  </div>
   <button class="lb-btn lb-next" aria-label="Next">›</button>
 </div>
 
@@ -635,34 +1122,53 @@ let selContinent = "All", selCountry = "All countries", visible = [], current = 
 
 const I18N = {
   en: {
-    title: "Alberto JC · Architectural & Landscape Photography",
-    nav_gallery: "Gallery", nav_about: "About", nav_contact: "Contact",
-    hero_title: "Light, Space<br>& Geometry", hero_sub: "Architectural & Landscape Photography", scroll: "Scroll",
-    portfolio: "Portfolio", gallery: "Gallery",
-    profile: "Profile", about_title: "About The Photographer",
+    title: "Alberto JC · Light, Space & Geometry",
+    nav_gallery: "Archive", nav_about: "Philosophy", nav_contact: "Contact",
+    hero_title: "Light, Space<br><em>&amp;</em> Geometry",
+    hero_sub: "Architectural & Landscape Photography",
+    scroll: "Explore",
+    manifesto_tag: "01 / Essence",
+    manifesto_quote: "“Light is the material that sculpts emotion.”",
+    portfolio: "02 / Selected Works", gallery: "Visual Archive",
+    count_label: "Works",
+    profile: "03 / The Author", about_title: "Alberto JC",
+    role: "Lighting Consultant & Photographer",
     bio: "My professional background in lighting consultancy has shaped the way I observe, interpret and experience architecture and space. My eye is particularly drawn to urban environments, geometric perspectives, architectural forms and landscapes, exploring the relationships between light, structure and visual perception.",
     bio2: "I understand photography as a constant exploration of how light transforms spaces, reveals volumes, accentuates geometries and shapes the way we perceive the built environment.",
-    years: "Years Experience", photos: "Photos Worldwide",
-    visited: "Countries Visited", touch: "Get in touch", contact: "Contact", email: "Email",
-    f_name: "Full name", f_phone: "Phone", f_email: "Email", f_msg: "Message", f_send: "Send message", f_sending: "Sending...",
-    f_ok: "Thank you! Your message has been sent.", f_err: "Something went wrong. Please try again or write to me on Instagram.", f_req: "Please fill in your name, email and message.",
-    rights: "All rights reserved", empty: "No photos in this selection."
+    years: "Years Experience", photos: "Captured Spaces", visited: "Countries Explored",
+    touch: "04 / Inquiries", contact: "Contact",
+    f_name: "Full name", f_phone: "Phone (optional)", f_email: "Email address",
+    f_msg: "Tell me about your project or inquiry...", f_send: "Send message", f_sending: "Sending...",
+    f_ok: "Thank you. Your message has been received.",
+    f_err: "Something went wrong. Please try again or reach out via Instagram.",
+    f_req: "Please complete your name, email, and message.",
+    rights: "All rights reserved", empty: "No works found in this selection."
   },
   es: {
-    title: "Alberto JC · Fotografía de Arquitectura y Paisaje",
-    nav_gallery: "Galería", nav_about: "Sobre mí", nav_contact: "Contacto",
-    hero_title: "Luz, Espacio<br>y Geometría", hero_sub: "Fotografía de Arquitectura y Paisaje", scroll: "Desliza",
-    portfolio: "Portafolio", gallery: "Galería",
-    profile: "Perfil", about_title: "Sobre el fotógrafo",
+    title: "Alberto JC · Luz, Espacio y Geometría",
+    nav_gallery: "Archivo", nav_about: "Filosofía", nav_contact: "Contacto",
+    hero_title: "Luz, Espacio<br><em>y</em> Geometría",
+    hero_sub: "Fotografía de Arquitectura y Paisaje",
+    scroll: "Explorar",
+    manifesto_tag: "01 / Esencia",
+    manifesto_quote: "“La luz es la materia que esculpe sensaciones.”",
+    portfolio: "02 / Obra Seleccionada", gallery: "Archivo Visual",
+    count_label: "Obras",
+    profile: "03 / El Autor", about_title: "Alberto JC",
+    role: "Consultor de Iluminación y Fotógrafo",
     bio: "Mi trayectoria profesional en el ámbito de la consultoría de iluminación ha definido mi manera de observar, interpretar y experimentar la arquitectura y el espacio. Mi mirada se siente especialmente atraída por los entornos urbanos, las perspectivas geométricas, las formas arquitectónicas y los paisajes, explorando las relaciones entre luz, estructura y percepción visual.",
     bio2: "Entiendo la fotografía como una exploración constante de cómo la luz transforma los espacios, revela los volúmenes, acentúa las geometrías y condiciona nuestra manera de percibir el entorno construido.",
-    years: "Años de experiencia", photos: "Fotos por el mundo",
-    visited: "Países visitados", touch: "Hablemos", contact: "Contacto", email: "Correo",
-    f_name: "Nombre y apellidos", f_phone: "Teléfono", f_email: "Correo electrónico", f_msg: "Comentarios", f_send: "Enviar mensaje", f_sending: "Enviando...",
-    f_ok: "¡Gracias! Tu mensaje ha sido enviado.", f_err: "Algo ha fallado. Inténtalo de nuevo o escríbeme por Instagram.", f_req: "Por favor, rellena tu nombre, correo y comentarios.",
-    rights: "Todos los derechos reservados", empty: "No hay fotos en esta selección."
+    years: "Años de experiencia", photos: "Espacios capturados", visited: "Países explorados",
+    touch: "04 / Consultas", contact: "Contacto",
+    f_name: "Nombre y apellidos", f_phone: "Teléfono (opcional)", f_email: "Correo electrónico",
+    f_msg: "Cuéntame sobre tu proyecto o consulta...", f_send: "Enviar mensaje", f_sending: "Enviando...",
+    f_ok: "Gracias. Tu mensaje ha sido enviado.",
+    f_err: "Algo ha fallado. Inténtalo de nuevo o escríbeme por Instagram.",
+    f_req: "Por favor, completa tu nombre, correo y mensaje.",
+    rights: "Todos los derechos reservados", empty: "No hay obras en esta selección."
   }
 };
+
 const PLACES_ES = {
   "All": "Todas", "All countries": "Todos los países",
   "Africa": "África", "Europe": "Europa", "North America": "Norteamérica", "South America": "Sudamérica",
@@ -671,9 +1177,23 @@ const PLACES_ES = {
   "France": "Francia", "Germany": "Alemania", "Greece": "Grecia", "Ireland": "Irlanda", "Italy": "Italia",
   "Spain": "España", "United Kingdom": "Reino Unido", "USA": "EE. UU.", "Panama": "Panamá"
 };
+
 let lang = "en";
 const T = k => I18N[lang][k];
 const disp = name => (lang === "es" && PLACES_ES[name]) || name;
+const $ = id => document.getElementById(id);
+const unique = arr => [...new Set(arr)].sort((a,b) => a.localeCompare(b));
+const pad = n => String(n).padStart(3, "0");
+
+document.addEventListener("mousemove", e => {
+  const amb = $("ambient");
+  amb.style.setProperty("--x", e.clientX + "px");
+  amb.style.setProperty("--y", e.clientY + "px");
+});
+
+window.addEventListener("scroll", () => {
+  $("navbar").classList.toggle("scrolled", window.scrollY > 60);
+});
 
 function setLang(l){
   lang = l;
@@ -686,11 +1206,10 @@ function setLang(l){
   render();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
-const $ = id => document.getElementById(id);
-const unique = arr => [...new Set(arr)].sort((a,b) => a.localeCompare(b));
 
 function makeButtons(container, items, selected, onClick){
   container.innerHTML = "";
+  container.style.display = items.length ? "flex" : "none";
   items.forEach(name => {
     const b = document.createElement("button");
     b.textContent = disp(name);
@@ -699,6 +1218,15 @@ function makeButtons(container, items, selected, onClick){
     container.appendChild(b);
   });
 }
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
 
 function render(){
   makeButtons($("continents"), ["All", ...unique(photos.map(p => p.continent))], selContinent, c => {
@@ -711,13 +1239,23 @@ function render(){
     (selContinent === "All" || p.continent === selContinent) &&
     (selCountry === "All countries" || p.country === selCountry));
 
+  $("photo-count").textContent = `${pad(visible.length)} ${T("count_label")}`;
+
   const grid = $("grid");
   grid.innerHTML = visible.length ? "" : '<p class="empty">' + T("empty") + '</p>';
   visible.forEach((p, i) => {
     const f = document.createElement("figure");
-    f.innerHTML = `<img loading="lazy" src="${BASE + encodeURI(p.path)}" alt="${disp(p.country)}, ${disp(p.continent)}"><figcaption>${disp(p.country)}</figcaption>`;
+    f.innerHTML = `
+      <div class="img-wrap">
+        <img loading="lazy" src="${BASE + encodeURI(p.path)}" alt="${disp(p.country)}, ${disp(p.continent)}">
+      </div>
+      <figcaption>
+        <span>${disp(p.country)}</span>
+        <span class="fig-num">${pad(i + 1)}</span>
+      </figcaption>`;
     f.onclick = () => openLb(i);
     grid.appendChild(f);
+    observer.observe(f);
   });
 }
 
@@ -725,7 +1263,8 @@ function openLb(i){
   current = (i + visible.length) % visible.length;
   const p = visible[current];
   $("lb-img").src = BASE + encodeURI(p.path);
-  $("lb-cap").textContent = disp(p.country) + ", " + disp(p.continent);
+  $("lb-num").textContent = `${pad(current + 1)} / ${pad(visible.length)}`;
+  $("lb-cap").textContent = `${disp(p.country)} — ${disp(p.continent)}`;
   $("lightbox").classList.add("open");
 }
 const closeLb = () => $("lightbox").classList.remove("open");
