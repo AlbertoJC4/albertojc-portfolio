@@ -6,96 +6,104 @@
 <title>Alberto JC · Architectural & Landscape Photography</title>
 <meta name="description" content="Architectural and landscape photography. Light, space and geometry.">
 <style>
-  :root { --bg:#0d0d0d; --fg:#f2f0eb; --muted:#8d8a84; --line:#2a2a2a; --accent:#c9b79c; }
+  :root { --bg:#050505; --fg:#f4f4f0; --muted:#77746e; --line:#1f1f1f; --accent:#d4c3a3; }
   * { box-sizing:border-box; margin:0; padding:0; }
   html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--fg); font-family:Helvetica, Arial, sans-serif; font-weight:300; line-height:1.7; }
+  body { background:var(--bg); color:var(--fg); font-family:-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; font-weight:300; line-height:1.6; selection-background-color: var(--accent); selection-color: #000; }
   a { color:inherit; text-decoration:none; }
 
-  header { position:fixed; top:0; left:0; right:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:24px 5vw; background:linear-gradient(#0d0d0dCC,transparent); }
-  .logo { letter-spacing:.35em; text-transform:uppercase; font-size:14px; }
-  nav a { margin-left:30px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#b9b5ad; transition:color .2s; }
+  /* HEADER ESTILO MENÚ FLOTANTE MINIMALISTA */
+  header { position:fixed; top:0; left:0; right:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:30px 6vw; background:linear-gradient(to bottom, rgba(5,5,5,0.9), transparent); backdrop-filter: blur(6px); }
+  .logo { letter-spacing:.4em; text-transform:uppercase; font-size:13px; font-weight: 400; }
+  nav { display: flex; align-items: center; }
+  nav a { margin-left:35px; font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:#999; transition:color .3s; }
   nav a:hover { color:var(--fg); }
 
-  .lang { margin-left:30px; display:inline-flex; gap:2px; }
-  .lang button { background:none; border:none; color:#8d8a84; font:inherit; font-size:12px; letter-spacing:.2em; cursor:pointer; padding:2px 6px; border-bottom:1px solid transparent; }
+  .lang { margin-left:35px; display:inline-flex; gap:6px; }
+  .lang button { background:none; border:none; color:#777; font:inherit; font-size:11px; letter-spacing:.2em; cursor:pointer; padding:2px 4px; transition: color .3s; }
   .lang button:hover { color:var(--fg); }
-  .lang button.active { color:var(--fg); border-bottom-color:var(--accent); }
+  .lang button.active { color:var(--fg); font-weight: 500; border-bottom: 1px solid var(--accent); }
 
-  /* HERO */
-  .hero { height:100vh; min-height:540px; position:relative; display:flex; align-items:flex-end; overflow:hidden; background:#111; }
-  .hero svg, .hero > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,.25), transparent 35%, #0d0d0d 100%); }
-  .hero-text { position:relative; z-index:2; padding:0 5vw 10vh; }
-  .hero h1 { font-weight:200; font-size:clamp(38px,6.5vw,92px); letter-spacing:.03em; line-height:1.05; }
-  .hero p { margin-top:22px; font-size:clamp(11px,1.3vw,14px); letter-spacing:.4em; text-transform:uppercase; color:#c4c0b8; }
-  .scroll { position:absolute; z-index:2; right:5vw; bottom:10vh; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:#c4c0b8; writing-mode:vertical-rl; }
-  .scroll::after { content:""; display:block; width:1px; height:60px; background:#c4c0b8; margin:12px auto 0; }
+  /* HERO CINEMATOGRÁFICO */
+  .hero { height:100vh; min-height:600px; position:relative; display:flex; align-items:flex-end; overflow:hidden; background:#000; }
+  .hero svg, .hero > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter: brightness(0.85); }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, #050505 0%, rgba(5,5,5,0.3) 50%, transparent 100%); }
+  .hero-text { position:relative; z-index:2; padding:0 6vw 12vh; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; }
+  .hero h1 { font-weight:200; font-size:clamp(36px, 6vw, 84px); letter-spacing:-0.02em; line-height:1.05; }
+  .hero p { font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom: 10px; }
+  .scroll { font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); writing-mode:vertical-rl; display: flex; align-items: center; gap: 15px; }
+  .scroll::after { content:""; display:block; width:1px; height:40px; background:var(--muted); }
 
-  section { padding:110px 5vw; }
-  .eyebrow { font-size:12px; letter-spacing:.35em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
-  h2 { font-weight:200; font-size:clamp(28px,3.4vw,44px); letter-spacing:.06em; margin-bottom:44px; }
+  section { padding:130px 6vw; }
+  .eyebrow { font-size:11px; letter-spacing:.4em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  h2 { font-weight:200; font-size:clamp(26px,3vw,40px); letter-spacing:.02em; margin-bottom:40px; }
 
-  /* GALLERY */
-  .filters { margin-bottom:14px; display:flex; flex-wrap:wrap; gap:8px 26px; }
-  .filters.countries { margin-bottom:44px; min-height:26px; }
-  .filters button { background:none; border:none; border-bottom:1px solid transparent; color:var(--muted); font:inherit; font-size:13px; letter-spacing:.22em; text-transform:uppercase; padding:4px 0; cursor:pointer; transition:color .2s; }
+  /* FILTROS Y GALERÍA ESTILO GRID ELEGANTE */
+  .filters-wrapper { margin-bottom: 50px; border-bottom: 1px solid var(--line); padding-bottom: 25px; }
+  .filters { display:flex; flex-wrap:wrap; gap:10px 30px; }
+  .filters.countries { margin-top: 15px; margin-bottom:0; min-height:20px; }
+  .filters button { background:none; border:none; color:var(--muted); font:inherit; font-size:12px; letter-spacing:.2em; text-transform:uppercase; padding:4px 0; cursor:pointer; transition:color .3s; }
   .filters button:hover { color:var(--fg); }
-  .filters button.active { color:var(--fg); border-bottom-color:var(--accent); }
-  .countries button { font-size:12px; letter-spacing:.16em; }
-  .grid { columns:3 320px; column-gap:14px; }
-  .grid figure { break-inside:avoid; margin-bottom:14px; position:relative; cursor:zoom-in; overflow:hidden; background:#181818; }
-  .grid img { width:100%; display:block; transition:transform .8s; }
-  .grid figure:hover img { transform:scale(1.04); }
-  .grid figcaption { position:absolute; left:0; right:0; bottom:0; padding:34px 16px 14px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; background:linear-gradient(transparent,#000000B8); opacity:0; transition:opacity .3s; }
+  .filters button.active { color:var(--fg); color: var(--accent); }
+  .countries button { font-size:11px; letter-spacing:.15em; }
+
+  .grid { columns:3 300px; column-gap:16px; }
+  .grid figure { break-inside:avoid; margin-bottom:16px; position:relative; cursor:zoom-in; overflow:hidden; background:#111; border-radius: 2px; }
+  .grid img { width:100%; display:block; transition:transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s; filter: grayscale(15%); }
+  .grid figure:hover img { transform:scale(1.03); filter: grayscale(0%); }
+  .grid figcaption { position:absolute; left:0; right:0; bottom:0; padding:40px 20px 16px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; background:linear-gradient(transparent, rgba(0,0,0,0.85)); opacity:0; transition:opacity .3s ease; }
   .grid figure:hover figcaption { opacity:1; }
-  .empty { color:var(--muted); }
+  .empty { color:var(--muted); font-size: 14px; letter-spacing: 0.1em; }
 
-  /* ABOUT */
-  .about { background:#121212; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .about-wrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.1fr; gap:6vw; align-items:center; }
-  .about-photo { aspect-ratio:4/5; background:#1b1b1b url("about.jpg") center/cover no-repeat; }
-  .about h2 { margin-bottom:10px; }
-  .about .name { font-size:20px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:28px; }
-  .about p.bio { font-size:18px; color:#cfccc5; max-width:560px; }
-  .about p.bio + p.bio { margin-top:18px; }
-  .stats { display:flex; flex-wrap:wrap; gap:28px 56px; margin-top:44px; padding-top:34px; border-top:1px solid var(--line); }
-  .stats strong { display:block; font-weight:200; font-size:clamp(34px,4vw,52px); letter-spacing:.03em; line-height:1.1; }
-  .stats span { font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+  /* ABOUT / PERFIL */
+  .about { background:#080808; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .about-wrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.2fr; gap:8vw; align-items:center; }
+  .about-photo { aspect-ratio:4/5; background:#141414 url("about.jpg") center/cover no-repeat; filter: grayscale(20%); }
+  .about h2 { margin-bottom:12px; }
+  .about .name { font-size:14px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:32px; }
+  .about p.bio { font-size:16px; color:#bbb; max-width:520px; line-height: 1.8; }
+  .about p.bio + p.bio { margin-top:20px; }
+  .stats { display:flex; flex-wrap:wrap; gap:30px 60px; margin-top:50px; padding-top:35px; border-top:1px solid var(--line); }
+  .stats strong { display:block; font-weight:200; font-size:clamp(32px,3.5vw,48px); letter-spacing:-0.02em; }
+  .stats span { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
 
-  /* CONTACT */
-  .contact p { margin-bottom:10px; font-size:18px; color:#cfccc5; }
-  .contact span.k { display:inline-block; width:110px; font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
-  .contact a { border-bottom:1px solid var(--line); transition:border-color .2s; }
-  .contact a:hover { border-color:var(--accent); }
-  .contact-wrap { display:grid; grid-template-columns:1fr 1.2fr; gap:6vw; max-width:1200px; }
-  .contact-form { display:grid; gap:14px; }
-  .contact-form input, .contact-form textarea { width:100%; background:#141414; border:1px solid var(--line); color:var(--fg); font:inherit; font-size:16px; padding:14px 16px; border-radius:0; outline:none; transition:border-color .2s; }
+  /* CONTACTO */
+  .contact-wrap { display:grid; grid-template-columns:1fr 1.3fr; gap:8vw; max-width:1200px; }
+  .contact p { margin-bottom:15px; font-size:16px; color:#bbb; }
+  .contact span.k { display:inline-block; width:110px; font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); }
+  .contact a { border-bottom:1px solid var(--line); transition:border-color .3s; padding-bottom: 2px; }
+  .contact a:hover { border-color:var(--accent); color:var(--fg); }
+  
+  .contact-form { display:grid; gap:16px; }
+  .contact-form input, .contact-form textarea { width:100%; background:#0f0f0f; border:1px solid var(--line); color:var(--fg); font:inherit; font-size:14px; padding:16px 18px; border-radius:0; outline:none; transition:border-color .3s; }
   .contact-form input:focus, .contact-form textarea:focus { border-color:var(--accent); }
-  .contact-form input::placeholder, .contact-form textarea::placeholder { color:var(--muted); }
-  .contact-form textarea { min-height:150px; resize:vertical; }
+  .contact-form input::placeholder, .contact-form textarea::placeholder { color:#555; }
+  .contact-form textarea { min-height:160px; resize:vertical; }
   .contact-form .hp { position:absolute; left:-9999px; opacity:0; height:0; width:0; }
-  .contact-form button { justify-self:start; background:none; border:1px solid var(--accent); color:var(--fg); font:inherit; font-size:12px; letter-spacing:.3em; text-transform:uppercase; padding:15px 34px; cursor:pointer; transition:background .2s, color .2s; }
-  .contact-form button:hover { background:var(--accent); color:#0d0d0d; }
-  .contact-form button:disabled { opacity:.5; cursor:default; }
-  #form-status { font-size:15px; min-height:22px; color:var(--accent); }
-  #form-status.err { color:#d98b8b; }
-  footer { padding:34px 5vw; border-top:1px solid var(--line); color:var(--muted); font-size:12px; letter-spacing:.18em; text-transform:uppercase; }
+  .contact-form button { justify-self:start; background:none; border:1px solid var(--accent); color:var(--fg); font:inherit; font-size:11px; letter-spacing:.3em; text-transform:uppercase; padding:16px 36px; cursor:pointer; transition:background .3s, color .3s; }
+  .contact-form button:hover { background:var(--accent); color:#000; }
+  .contact-form button:disabled { opacity:.4; cursor:default; }
+  #form-status { font-size:14px; min-height:20px; color:var(--accent); }
+  #form-status.err { color:#e07a7a; }
+  
+  footer { padding:40px 6vw; border-top:1px solid var(--line); color:var(--muted); font-size:11px; letter-spacing:.2em; text-transform:uppercase; display: flex; justify-content: space-between; }
 
-  /* LIGHTBOX */
-  #lightbox { position:fixed; inset:0; background:#000000F4; display:none; align-items:center; justify-content:center; flex-direction:column; z-index:100; padding:30px; }
+  /* LIGHTBOX MODERNO */
+  #lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.96); backdrop-filter: blur(10px); display:none; align-items:center; justify-content:center; flex-direction:column; z-index:100; padding:40px; }
   #lightbox.open { display:flex; }
-  #lightbox img { max-width:100%; max-height:84vh; }
-  #lightbox p { margin-top:16px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
-  .lb-btn { position:absolute; background:none; border:none; color:var(--fg); font-size:36px; cursor:pointer; padding:20px; }
-  .lb-close { top:6px; right:10px; } .lb-prev { left:6px; top:50%; } .lb-next { right:6px; top:50%; }
+  #lightbox img { max-width:90vw; max-height:80vh; object-fit: contain; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+  #lightbox p { margin-top:20px; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); }
+  .lb-btn { position:absolute; background:none; border:none; color:#aaa; font-size:32px; cursor:pointer; padding:20px; transition: color 0.3s; }
+  .lb-btn:hover { color: var(--fg); }
+  .lb-close { top:20px; right:25px; font-size: 40px; } 
+  .lb-prev { left:20px; top:50%; transform: translateY(-50%); } 
+  .lb-next { right:20px; top:50%; transform: translateY(-50%); }
 
-  @media (max-width:800px){
-    .about-wrap, .contact-wrap { grid-template-columns:1fr; }
-    nav a { margin-left:14px; font-size:11px; }
-    .lang { margin-left:14px; }
-    section { padding:70px 5vw; }
-    .stats { gap:34px; }
+  @media (max-width:850px){
+    .about-wrap, .contact-wrap, .hero-text { grid-template-columns:1fr; flex-direction: column; align-items: flex-start; gap: 40px; }
+    nav a { margin-left:15px; font-size:10px; }
+    .lang { margin-left:15px; }
+    section { padding:80px 6vw; }
     .scroll { display:none; }
   }
 </style>
@@ -113,39 +121,34 @@
 </header>
 
 <div class="hero" id="home">
-  <!-- Built-in artwork (architecture, light and geometry). It is replaced automatically if you add cover.jpg -->
   <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
     <defs>
       <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#1b1b1f"/><stop offset=".55" stop-color="#6b5a47"/><stop offset="1" stop-color="#d9b98a"/>
+        <stop offset="0" stop-color="#121215"/><stop offset=".55" stop-color="#4a3f33"/><stop offset="1" stop-color="#b59a72"/>
       </linearGradient>
       <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#fff3d6" stop-opacity=".55"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
+        <stop offset="0" stop-color="#fff3d6" stop-opacity=".4"/><stop offset="1" stop-color="#fff3d6" stop-opacity="0"/>
       </linearGradient>
       <linearGradient id="slabL" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#d9d3c7"/><stop offset="1" stop-color="#8c867b"/>
+        <stop offset="0" stop-color="#c5beb2"/><stop offset="1" stop-color="#7a7469"/>
       </linearGradient>
       <linearGradient id="slabD" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#2c2a28"/><stop offset="1" stop-color="#121212"/>
+        <stop offset="0" stop-color="#22201e"/><stop offset="1" stop-color="#0a0a0a"/>
       </linearGradient>
     </defs>
     <rect width="1600" height="900" fill="url(#sky)"/>
-    <circle cx="1180" cy="250" r="70" fill="#fff0cf" opacity=".9"/>
-    <circle cx="1180" cy="250" r="140" fill="#fff0cf" opacity=".15"/>
+    <circle cx="1180" cy="250" r="70" fill="#fff0cf" opacity=".85"/>
+    <circle cx="1180" cy="250" r="140" fill="#fff0cf" opacity=".1"/>
     <polygon points="1180,250 1600,900 600,900" fill="url(#beam)"/>
-    <!-- slabs -->
     <polygon points="640,0 860,0 860,900 640,900" fill="url(#slabD)"/>
     <polygon points="860,0 1010,60 1010,840 860,900" fill="url(#slabL)"/>
-    <polygon points="1010,60 1100,100 1100,800 1010,840" fill="#b8b1a4"/>
-    <polygon points="1100,100 1160,130 1160,770 1100,800" fill="#e8e1d2"/>
-    <polygon points="0,0 480,0 480,900 0,900" fill="#0f0f10"/>
+    <polygon points="1010,60 1100,100 1100,800 1010,840" fill="#a39c90"/>
+    <polygon points="1100,100 1160,130 1160,770 1100,800" fill="#d4cbb8"/>
+    <polygon points="0,0 480,0 480,900 0,900" fill="#08080a"/>
     <polygon points="480,0 640,0 640,900 480,900" fill="url(#slabD)"/>
-    <!-- floor and shadow -->
-    <polygon points="0,900 1600,900 1600,760 1160,770 860,900" fill="#241f1a"/>
-    <polygon points="860,900 1160,770 1600,760 1600,900" fill="#3a3027" opacity=".8"/>
-    <polygon points="1010,840 1600,900 1250,900" fill="#fff3d6" opacity=".18"/>
-    <!-- thin geometry lines -->
-    <g stroke="#f2f0eb" stroke-opacity=".28" stroke-width="1" fill="none">
+    <polygon points="0,900 1600,900 1600,760 1160,770 860,900" fill="#1a1612"/>
+    <polygon points="860,900 1160,770 1600,760 1600,900" fill="#2d251e" opacity=".7"/>
+    <g stroke="#f4f4f0" stroke-opacity=".2" stroke-width="1" fill="none">
       <line x1="860" y1="0" x2="860" y2="900"/><line x1="1010" y1="60" x2="1010" y2="840"/>
       <line x1="1100" y1="100" x2="1100" y2="800"/><line x1="860" y1="0" x2="1160" y2="130"/>
       <line x1="860" y1="900" x2="1160" y2="770"/><line x1="480" y1="0" x2="480" y2="900"/>
@@ -153,17 +156,21 @@
   </svg>
   <img src="cover.jpg" alt="" onerror="this.remove()">
   <div class="hero-text">
-    <h1 data-i18n="hero_title">Light, Space<br>&amp; Geometry</h1>
-    <p data-i18n="hero_sub">Architectural &amp; Landscape Photography</p>
+    <div>
+      <p data-i18n="hero_sub">Architectural &amp; Landscape Photography</p>
+      <h1 data-i18n="hero_title">Light, Space<br>&amp; Geometry</h1>
+    </div>
+    <div class="scroll" data-i18n="scroll">Scroll</div>
   </div>
-  <div class="scroll" data-i18n="scroll">Scroll</div>
 </div>
 
 <section id="gallery">
   <div class="eyebrow" data-i18n="portfolio">Portfolio</div>
   <h2 data-i18n="gallery">Gallery</h2>
-  <div class="filters" id="continents"></div>
-  <div class="filters countries" id="countries"></div>
+  <div class="filters-wrapper">
+    <div class="filters" id="continents"></div>
+    <div class="filters countries" id="countries"></div>
+  </div>
   <div class="grid" id="grid"></div>
 </section>
 
@@ -205,7 +212,10 @@
   </div>
 </section>
 
-<footer>© <span id="year"></span> Alberto JC · <span data-i18n="rights">All rights reserved</span></footer>
+<footer>
+  <span>© <span id="year"></span> Alberto JC</span>
+  <span data-i18n="rights">All rights reserved</span>
+</footer>
 
 <div id="lightbox">
   <button class="lb-btn lb-close" aria-label="Close">×</button>
@@ -216,417 +226,405 @@
 </div>
 
 <script>
-/* =====================================================================
-   YOUR PHOTO LIST GOES HERE
-   One line per photo, in quotes, with a comma at the end.
-   Format:  "Continent/Country/photo-name.jpg",
-   It must match your folders exactly (capitals and accents too).
-   The website reads the continent and country from the path.
-   (Your photos are already listed below. Add new ones the same way.)
-   ===================================================================== */
 const PHOTOS = [
-  "Africa/Morocco/MAR 100_resultado.jpg",
-  "Africa/Morocco/MAR 1000_resultado.jpg",
-  "Africa/Morocco/MAR 1001_resultado.jpg",
-  "Africa/Morocco/MAR 1002_resultado.jpg",
-  "Africa/Morocco/MAR 1003_resultado.jpg",
-  "Africa/Morocco/MAR 1004_resultado.jpg",
-  "Africa/Morocco/MAR 1005_resultado.jpg",
-  "Africa/Morocco/MAR 1006_resultado.jpg",
-  "Africa/Morocco/MAR 1007_resultado.jpg",
-  "Africa/Morocco/MAR 101_resultado.jpg",
-  "Africa/Morocco/MAR 102_resultado.jpg",
-  "Africa/Morocco/MAR 103_resultado.jpg",
-  "Africa/Morocco/MAR 104_resultado.jpg",
-  "Africa/Morocco/MAR 105_resultado.jpg",
-  "Africa/Morocco/MAR 106_resultado.jpg",
-  "Africa/Morocco/MAR 108_resultado.jpg",
-  "Africa/Morocco/MAR 109_resultado.jpg",
-  "Africa/Morocco/MAR 11_resultado.jpg",
-  "Africa/Morocco/MAR 110_resultado.jpg",
-  "Africa/Morocco/MAR 113_resultado.jpg",
-  "Africa/Morocco/MAR 5000_resultado.jpg",
-  "Africa/Morocco/MAR MK 1004_resultado.jpg",
-  "Asia/Cambodia/CAM 001_resultado.jpg",
-  "Asia/Cambodia/CAM 002_resultado.jpg",
-  "Asia/Cambodia/CAM 003_resultado.jpg",
-  "Asia/Cambodia/CAM 004_resultado.jpg",
-  "Asia/Cambodia/CAM 005_resultado.jpg",
-  "Asia/Cambodia/CAM 007_resultado.jpg",
-  "Asia/Cambodia/CAM 012_resultado.jpg",
-  "Asia/Cambodia/CAM 1000_resultado.jpg",
-  "Asia/Cambodia/CAM 10000_resultado.jpg",
-  "Asia/Hong Kong/HK 001_resultado.jpg",
-  "Asia/Hong Kong/HK 002_resultado.jpg",
-  "Asia/Hong Kong/HK 040_resultado.jpg",
-  "Asia/Hong Kong/HK 100_resultado.jpg",
-  "Asia/Hong Kong/HK 1000_resultado.jpg",
-  "Asia/Hong Kong/HK 101_resultado.jpg",
-  "Asia/Hong Kong/HK 103_resultado.jpg",
-  "Asia/Hong Kong/HK 1060_resultado.jpg",
-  "Asia/Hong Kong/HK 1070_resultado.jpg",
-  "Asia/Hong Kong/HK 1080_resultado.jpg",
-  "Asia/Hong Kong/HK 109_resultado.jpg",
-  "Asia/Hong Kong/HK 1090_resultado.jpg",
-  "Asia/Hong Kong/HK 1091_resultado.jpg",
-  "Asia/India/IND 002_resultado.jpg",
-  "Asia/India/IND 003_resultado.jpg",
-  "Asia/India/IND 004_resultado.jpg",
-  "Asia/India/IND 005_resultado.jpg",
-  "Asia/India/IND 006_resultado.jpg",
-  "Asia/India/INDIA 001_resultado.jpg",
-  "Asia/India/INDIA 006_resultado.jpg",
-  "Asia/India/INDIA 007_resultado.jpg",
-  "Asia/India/INDIA 008_resultado.jpg",
-  "Asia/India/INDIA 009_resultado.jpg",
-  "Asia/India/INDIA 010_resultado.jpg",
-  "Asia/India/INDIA 011_resultado.jpg",
-  "Asia/India/INDIA 012_resultado.jpg",
-  "Asia/India/INDIA 013_resultado.jpg",
-  "Asia/India/INDIA 014_resultado.jpg",
-  "Asia/India/INDIA 015_resultado.jpg",
-  "Asia/India/INDIA 016_resultado.jpg",
-  "Asia/Japan/JAP 8000_resultado.jpg",
-  "Asia/Japan/JAP 8001_resultado.jpg",
-  "Asia/Japan/JAP 8004_resultado.jpg",
-  "Asia/Japan/JAP 8005_resultado.jpg",
-  "Asia/Japan/JAP 9000_resultado.jpg",
-  "Asia/Japan/JAP KYOTO 001_resultado.jpg",
-  "Asia/Japan/JAP KYOTO 002_resultado.jpg",
-  "Asia/Japan/JAP KYOTO 003_resultado.jpg",
-  "Asia/Japan/JAP NARA 001_resultado.jpg",
-  "Asia/Japan/JAP NARA 002_resultado.jpg",
-  "Asia/Japan/JAP TK 1000_resultado.jpg",
-  "Asia/Japan/JAP TOK 400_resultado.jpg",
-  "Asia/Macau/MACAO 1_resultado.jpg",
-  "Asia/Macau/MACAO 1000_resultado.jpg",
-  "Asia/Macau/MACAO 1001_resultado.jpg",
-  "Asia/Macau/MACAO 1006_resultado.jpg",
-  "Asia/Macau/MACAO 2_resultado.jpg",
-  "Asia/Macau/MACAO 3_resultado.jpg",
-  "Asia/Macau/MACAO 4_resultado.jpg",
-  "Asia/Macau/MACAO 100000_resultado.jpg",
-  "Asia/Malaysia/MAL  KL 002_resultado.jpg",
-  "Asia/Malaysia/MAL KL 100_resultado.jpg",
-  "Asia/Singapore/SIN 002_resultado.jpg",
-  "Asia/Singapore/SIN 004_resultado.jpg",
-  "Asia/Singapore/SIN 010_resultado.jpg",
-  "Asia/Singapore/SIN 021_resultado.jpg",
-  "Asia/Singapore/SIN 026_resultado.jpg",
-  "Asia/Singapore/SIN 029_resultado.jpg",
-  "Asia/Singapore/SIN 030_resultado.jpg",
-  "Asia/Singapore/SIN 031_resultado.jpg",
-  "Asia/Singapore/SIN 032_resultado.jpg",
-  "Asia/Singapore/SIN 040_resultado.jpg",
-  "Asia/Singapore/SIN 044_resultado.jpg",
-  "Asia/Singapore/SIN 046_resultado.jpg",
-  "Asia/Singapore/SIN 055_resultado.jpg",
-  "Asia/Singapore/SIN 060_resultado.jpg",
-  "Asia/Singapore/SIN 40_resultado.jpg",
-  "Asia/Thailand/TAI 004_resultado.jpg",
-  "Asia/Thailand/TAI 010_resultado.jpg",
-  "Asia/Thailand/TAI 014_resultado.jpg",
-  "Asia/Thailand/TAI 022_resultado.jpg",
-  "Asia/Thailand/TAI 041_resultado.jpg",
-  "Asia/Thailand/TAI 1000_resultado.jpg",
-  "Asia/Thailand/TAI 101_resultado.jpg",
-  "Asia/Thailand/TAI 102_resultado.jpg",
-  "Asia/Thailand/TAI 1020_resultado.jpg",
-  "Asia/Thailand/TAI 1050_resultado.jpg",
-  "Asia/Thailand/TAI 140_resultado.jpg",
-  "Asia/Thailand/TAI 141_resultado.jpg",
-  "Asia/Thailand/TAI 142_resultado.jpg",
-  "Asia/Thailand/TAI 144_resultado.jpg",
-  "Asia/Thailand/TAI PHUKET 010_resultado.jpg",
-  "Asia/Thailand/TAI 200000_resultado.jpg",
-  "Asia/Turkey/TUK ESTAMBUL 008_resultado.jpg",
-  "Asia/Turkey/TUR 100_resultado.jpg",
-  "Asia/Turkey/TUR EST 200_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 002_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 003_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 007_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 008_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 009_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 010_resultado.jpg",
-  "Asia/Turkey/TUR ESTAMBUL 012_resultado.jpg",
-  "Asia/UAE/EAU 002_resultado.jpg",
-  "Asia/UAE/EAU 100_resultado.jpg",
-  "Asia/UAE/EAU 1000_resultado.jpg",
-  "Asia/UAE/EAU 10058_resultado.jpg",
-  "Asia/UAE/EAU 101_resultado.jpg",
-  "Asia/UAE/EAU 103_resultado.jpg",
-  "Asia/UAE/EAU 104_resultado.jpg",
-  "Asia/UAE/EAU 1050_resultado.jpg",
-  "Asia/UAE/EAU 1051_resultado.jpg",
-  "Asia/UAE/EAU 2004_resultado.jpg",
-  "Asia/UAE/EAU ABU 001_resultado.jpg",
-  "Asia/UAE/EAU DUBAI 001_resultado.jpg",
-  "Asia/UAE/EAU 10000_resultado.jpg",
-  "Asia/Vietnam/VIE 004_resultado.jpg",
-  "Asia/Vietnam/VIE 008_resultado.jpg",
-  "Asia/Vietnam/VIE 009_resultado.jpg",
-  "Asia/Vietnam/VIE 012_resultado.jpg",
-  "Asia/Vietnam/VIE 014_resultado.jpg",
-  "Asia/Vietnam/VIE 016_resultado.jpg",
-  "Asia/Vietnam/VIE 017_resultado.jpg",
-  "Asia/Vietnam/VIE 019_resultado.jpg",
-  "Asia/Vietnam/VIE 021_resultado.jpg",
-  "Asia/Vietnam/VIT 002_resultado.jpg",
-  "Asia/Vietnam/VIT 020_resultado.jpg",
-  "Asia/Vietnam/VIT HANOI 001_resultado.jpg",
-  "Asia/Vietnam/VIE 100000_resultado.jpg",
-  "Europe/Austria/AUS 001_resultado.jpg",
-  "Europe/Austria/AUS 002_resultado.jpg",
-  "Europe/Austria/AUS 003_resultado.jpg",
-  "Europe/Austria/AUS 004_resultado.jpg",
-  "Europe/France/FRA 001_resultado.jpg",
-  "Europe/France/FRA 002_resultado.jpg",
-  "Europe/France/FRA 003_resultado.jpg",
-  "Europe/France/FRA 004_resultado.jpg",
-  "Europe/France/FRA 005_resultado.jpg",
-  "Europe/France/FRA 1000_resultado.jpg",
-  "Europe/France/FRA DISNEY 002_resultado.jpg",
-  "Europe/France/FRA DISNEY 003_resultado.jpg",
-  "Europe/France/FRA DISNEY 01_resultado.jpg",
-  "Europe/France/FRA PAR 099_resultado.jpg",
-  "Europe/France/FRA PARIS 001_resultado.jpg",
-  "Europe/France/FRA PARIS 003_resultado.jpg",
-  "Europe/France/FRA PARIS 004_resultado.jpg",
-  "Europe/France/FRA PARIS 005_resultado.jpg",
-  "Europe/France/FRA PARIS 006_resultado.jpg",
-  "Europe/Germany/ALE 001_resultado.jpg",
-  "Europe/Germany/ALE 100_resultado.jpg",
-  "Europe/Germany/ALE 10000_resultado.jpg",
-  "Europe/Germany/ALE 101_resultado.jpg",
-  "Europe/Germany/ALE 102_resultado.jpg",
-  "Europe/Germany/ALE 400_resultado.jpg",
-  "Europe/Germany/ALE 4000_resultado.jpg",
-  "Europe/Germany/ALE 4001_resultado.jpg",
-  "Europe/Germany/ALE 401_resultado.jpg",
-  "Europe/Germany/ALE 403_resultado.jpg",
-  "Europe/Germany/ALE 406_resultado.jpg",
-  "Europe/Germany/ALE 500_resultado.jpg",
-  "Europe/Germany/ALE 5001_resultado.jpg",
-  "Europe/Germany/ALE 5003_resultado.jpg",
-  "Europe/Germany/ALE 5004_resultado.jpg",
-  "Europe/Germany/ALE 501_resultado.jpg",
-  "Europe/Germany/ALE 502_resultado.jpg",
-  "Europe/Germany/ALE 503_resultado.jpg",
-  "Europe/Germany/ALE 504_resultado.jpg",
-  "Europe/Germany/ALE 505_resultado.jpg",
-  "Europe/Germany/ALE 506_resultado.jpg",
-  "Europe/Germany/ALE 507_resultado.jpg",
-  "Europe/Germany/ALE 508_resultado.jpg",
-  "Europe/Germany/ALE FRANKFURT 001_resultado.jpg",
-  "Europe/Germany/ALE 1000001_resultado.jpg",
-  "Europe/Germany/ALE 1000002_resultado.jpg",
-  "Europe/Germany/ALE 100000_resultado.jpg",
-  "Europe/Greece/GRE ATE 100_resultado.jpg",
-  "Europe/Greece/GRE ATE 200_resultado.jpg",
-  "Europe/Greece/GRE ATENAS 001_resultado.jpg",
-  "Europe/Greece/GRE ATENAS 002_resultado.jpg",
-  "Europe/Greece/GRE ATENAS 003_resultado.jpg",
-  "Europe/Greece/GRE ATENAS 004_resultado.jpg",
-  "Europe/Greece/GRE MIK 100_resultado.jpg",
-  "Europe/Greece/GRE MIK 102_resultado.jpg",
-  "Europe/Greece/GRE MIK 500_resultado.jpg",
-  "Europe/Greece/GRE SAN 010_resultado.jpg",
-  "Europe/Greece/GRE SAN 500_resultado.jpg",
-  "Europe/Greece/GRE SAN 501_resultado.jpg",
-  "Europe/Greece/GRE SAN 502_resultado.jpg",
-  "Europe/Greece/GRE SAN 503_resultado.jpg",
-  "Europe/Greece/GRE SAN 505_resultado.jpg",
-  "Europe/Greece/GRE SANTORINI 001_resultado.jpg",
-  "Europe/Greece/GRE 10000_resultado.jpg",
-  "Europe/Ireland/IRL 002_resultado.jpg",
-  "Europe/Ireland/IRL 003_resultado.jpg",
-  "Europe/Ireland/IRL 004_resultado.jpg",
-  "Europe/Ireland/IRL 005_resultado.jpg",
-  "Europe/Ireland/IRL 006_resultado.jpg",
-  "Europe/Ireland/IRL 007_resultado.jpg",
-  "Europe/Ireland/IRL 008_resultado.jpg",
-  "Europe/Ireland/IRL 009_resultado.jpg",
-  "Europe/Ireland/IRL 010_resultado.jpg",
-  "Europe/Ireland/IRL 011_resultado.jpg",
-  "Europe/Ireland/IRL_resultado.jpg",
-  "Europe/Italy/ITA 1000_resultado.jpg",
-  "Europe/Italy/ITA ROMA 001_resultado.jpg",
-  "Europe/Portugal/POR 10000_resultado.jpg",
-  "Europe/Portugal/POR 5000_resultado.jpg",
-  "Europe/Portugal/POR 9000_resultado.jpg",
-  "Europe/Portugal/POR AVE 103_resultado.jpg",
-  "Europe/Portugal/POR AVE 140_resultado.jpg",
-  "Europe/Portugal/POR AVE 500_resultado.jpg",
-  "Europe/Portugal/POR AVE 600_resultado.jpg",
-  "Europe/Portugal/POR AVE 601_resultado.jpg",
-  "Europe/Portugal/POR AVE 602_resultado.jpg",
-  "Europe/Portugal/POR AVE 603_resultado.jpg",
-  "Europe/Portugal/POR LISBOA 001_resultado.jpg",
-  "Europe/Portugal/POR NAZARE 001_resultado.jpg",
-  "Europe/Spain/ESP AVI 010_resultado.jpg",
-  "Europe/Spain/ESP AVI 1000_resultado.jpg",
-  "Europe/Spain/ESP AVI 103_resultado.jpg",
-  "Europe/Spain/ESP AVI 105_resultado.jpg",
-  "Europe/Spain/ESP AVI 200_resultado.jpg",
-  "Europe/Spain/ESP AVI 300_resultado.jpg",
-  "Europe/Spain/ESP AVI 400_resultado.jpg",
-  "Europe/Spain/ESP AVI 401_resultado.jpg",
-  "Europe/Spain/ESP AVILA 001_resultado.jpg",
-  "Europe/Spain/ESP AVILA 002_resultado.jpg",
-  "Europe/Spain/ESP AVILA 004_resultado.jpg",
-  "Europe/Spain/ESP AVILA 10000 (2)_resultado.jpg",
-  "Europe/Spain/ESP AVILA 10000_resultado.jpg",
-  "Europe/Spain/ESP AVILA 10001_resultado.jpg",
-  "Europe/Spain/ESP BENIDORM 001_resultado.jpg",
-  "Europe/Spain/ESP BENIDORM 002_resultado.jpg",
-  "Europe/Spain/ESP BENIDORM 003_resultado.jpg",
-  "Europe/Spain/ESP BENIDORM 006_resultado.jpg",
-  "Europe/Spain/ESP BIL  040_resultado.jpg",
-  "Europe/Spain/ESP BIL 041_resultado.jpg",
-  "Europe/Spain/ESP BIL 042_resultado.jpg",
-  "Europe/Spain/ESP BIL 101_resultado.jpg",
-  "Europe/Spain/ESP BILBAO 001_resultado.jpg",
-  "Europe/Spain/ESP BURGOS 001_resultado.jpg",
-  "Europe/Spain/ESP BURGOS 002_resultado.jpg",
-  "Europe/Spain/ESP CANTABRIA 001_resultado.jpg",
-  "Europe/Spain/ESP CANTABRIA 002_resultado.jpg",
-  "Europe/Spain/ESP CANTABRIA 003_resultado.jpg",
-  "Europe/Spain/ESP CANTABRIA 004_resultado.jpg",
-  "Europe/Spain/ESP CUE 1_resultado.jpg",
-  "Europe/Spain/ESP CUENCA 002_resultado.jpg",
-  "Europe/Spain/ESP CUENCA 003_resultado.jpg",
-  "Europe/Spain/ESP CUENCA 004_resultado.jpg",
-  "Europe/Spain/ESP GIJ 000_resultado.jpg",
-  "Europe/Spain/ESP GUA 004_resultado.jpg",
-  "Europe/Spain/ESP GUADALAJARA 001_resultado.jpg",
-  "Europe/Spain/ESP LA PALMAS 007_resultado.jpg",
-  "Europe/Spain/ESP LAN 1000_resultado.jpg",
-  "Europe/Spain/ESP LAN 1001_resultado.jpg",
-  "Europe/Spain/ESP LAN 1008_resultado.jpg",
-  "Europe/Spain/ESP LAN 120_resultado.jpg",
-  "Europe/Spain/ESP LAN 121_resultado.jpg",
-  "Europe/Spain/ESP LANZAROTE 001_resultado.jpg",
-  "Europe/Spain/ESP LAS PALMAS 001_resultado.jpg",
-  "Europe/Spain/ESP LAS PALMAS 002_resultado.jpg",
-  "Europe/Spain/ESP LAS PALMAS 003_resultado.jpg",
-  "Europe/Spain/ESP LAS PALMAS 006_resultado.jpg",
-  "Europe/Spain/ESP MA 2001_resultado.jpg",
-  "Europe/Spain/ESP MAD 002_resultado.jpg",
-  "Europe/Spain/ESP MAD 003_resultado.jpg",
-  "Europe/Spain/ESP MAD 004_resultado.jpg",
-  "Europe/Spain/ESP MAD 005_resultado.jpg",
-  "Europe/Spain/ESP MAD 006_resultado.jpg",
-  "Europe/Spain/ESP MAD 012_resultado.jpg",
-  "Europe/Spain/ESP MAD 018_resultado.jpg",
-  "Europe/Spain/ESP MAD 021_resultado.jpg",
-  "Europe/Spain/ESP MAD 022_resultado.jpg",
-  "Europe/Spain/ESP MAD 023_resultado.jpg",
-  "Europe/Spain/ESP MAD 024_resultado.jpg",
-  "Europe/Spain/ESP MAD 025_resultado.jpg",
-  "Europe/Spain/ESP MAD 026_resultado.jpg",
-  "Europe/Spain/ESP MAD 030_resultado.jpg",
-  "Europe/Spain/ESP MAD 031_resultado.jpg",
-  "Europe/Spain/ESP MAD 032_resultado.jpg",
-  "Europe/Spain/ESP MAD 100_resultado.jpg",
-  "Europe/Spain/ESP MAD 1000_resultado.jpg",
-  "Europe/Spain/ESP MAD 10000_resultado.jpg",
-  "Europe/Spain/ESP MAD 10001_resultado.jpg",
-  "Europe/Spain/ESP MAD 10004_resultado.jpg",
-  "Europe/Spain/ESP MAD 1001_resultado.jpg",
-  "Europe/Spain/ESP MAD 1008_resultado.jpg",
-  "Europe/Spain/ESP MAD 1010_resultado.jpg",
-  "Europe/Spain/ESP MAD 1011_resultado.jpg",
-  "Europe/Spain/ESP MAD 102_resultado.jpg",
-  "Europe/Spain/ESP MAD 103_resultado.jpg",
-  "Europe/Spain/ESP MAD 104_resultado.jpg",
-  "Europe/Spain/ESP MAD 105_resultado.jpg",
-  "Europe/Spain/ESP MAD 109_resultado.jpg",
-  "Europe/Spain/ESP MAD 110_resultado.jpg",
-  "Europe/Spain/ESP MAD 113_resultado.jpg",
-  "Europe/Spain/ESP MAD 115_resultado.jpg",
-  "Europe/Spain/ESP MAD 117_resultado.jpg",
-  "Europe/Spain/ESP MAD 12_resultado.jpg",
-  "Europe/Spain/ESP MAD 14_resultado.jpg",
-  "Europe/Spain/ESP MAD 200_resultado.jpg",
-  "Europe/Spain/ESP MAD 2000_resultado.jpg",
-  "Europe/Spain/ESP MAD 20000_resultado.jpg",
-  "Europe/Spain/ESP MAD 200004_resultado.jpg",
-  "Europe/Spain/ESP MAD 20002_resultado.jpg",
-  "Europe/Spain/ESP MAD 20003_resultado.jpg",
-  "Europe/Spain/ESP MAD 2002_resultado.jpg",
-  "Europe/Spain/ESP MAD 2003_resultado.jpg",
-  "Europe/Spain/ESP MAD 2004_resultado.jpg",
-  "Europe/Spain/ESP MAD 2005_resultado.jpg",
-  "Europe/Spain/ESP MAD 201_resultado.jpg",
-  "Europe/Spain/ESP MAD 300_resultado.jpg",
-  "Europe/Spain/ESP MAD 3000_resultado.jpg",
-  "Europe/Spain/ESP MAD 3001_resultado.jpg",
-  "Europe/Spain/ESP MAD 3004_resultado.jpg",
-  "Europe/Spain/ESP MAD 301_resultado.jpg",
-  "Europe/Spain/ESP MAD 8000_resultado.jpg",
-  "Europe/Spain/ESP MADRID 001_resultado.jpg",
-  "Europe/Spain/ESP MADRID 015_resultado.jpg",
-  "Europe/Spain/ESP MADRID 016_resultado.jpg",
-  "Europe/Spain/ESP MADRID 017_resultado.jpg",
-  "Europe/Spain/ESP MADRID 020_resultado.jpg",
-  "Europe/Spain/ESP MADRID 021_resultado.jpg",
-  "Europe/Spain/ESP MADRID 19_resultado.jpg",
-  "Europe/Spain/ESP MENORCA 1_resultado.jpg",
-  "Europe/Spain/ESP MENORCA 2_resultado.jpg",
-  "Europe/Spain/ESP MENORCA 3_resultado.jpg",
-  "Europe/Spain/ESP MENORCA 4_resultado.jpg",
-  "Europe/Spain/ESP PALMA 1_resultado.jpg",
-  "Europe/Spain/ESP SALAMANCA 001_resultado.jpg",
-  "Europe/Spain/ESP TOL 001_resultado.jpg",
-  "Europe/Spain/ESP VAL 10000_resultado.jpg",
-  "Europe/Spain/ESP VAL 101_resultado.jpg",
-  "Europe/Spain/ESP VAL 102_resultado.jpg",
-  "Europe/Spain/ESP VALENCIA 001_resultado.jpg",
-  "Europe/Spain/ESP VALENCIA 002_resultado.jpg",
-  "Europe/Spain/ESP VALENCIA 003_resultado.jpg",
-  "Europe/Spain/ESP ZAM 001_resultado.jpg",
-  "Europe/Spain/ESP ZAM 100_resultado.jpg",
-  "Europe/Spain/ESP ZAM 101_resultado.jpg",
-  "Europe/Spain/ESP ZAM 400_resultado.jpg",
-  "Europe/Spain/ESP ZAM 401_resultado.jpg",
-  "Europe/Spain/ESP 100000_resultado.jpg",
-  "Europe/Spain/ESP LAN 100000_resultado.jpg",
-  "Europe/United Kingdom/UK LON 100_resultado.jpg",
-  "Europe/United Kingdom/UK LON 1000_resultado.jpg",
-  "Europe/United Kingdom/UK LON 101_resultado.jpg",
-  "Europe/United Kingdom/UK LON 104_resultado.jpg",
-  "Europe/United Kingdom/UK LON 120_resultado.jpg",
-  "Europe/United Kingdom/UK LON 121_resultado.jpg",
-  "Europe/United Kingdom/UK LON 122_resultado.jpg",
-  "Europe/United Kingdom/UK 100000_resultado.jpg",
-  "Europe/United Kingdom/UK1000001_resultado.jpg",
-  "North America/USA/USA NY 010_resultado.jpg",
-  "North America/USA/USA NY 053_resultado.jpg",
-  "North America/USA/USA NY 055_resultado.jpg",
-  "North America/USA/USA NY 056_resultado.jpg",
-  "North America/USA/USA NY 057_resultado.jpg",
-  "North America/USA/USA NY 059_resultado.jpg",
-  "North America/USA/USA NY 060_resultado.jpg",
-  "North America/USA/USA NY 070_resultado.jpg",
-  "South America/Colombia/COL 10000_resultado.jpg",
-  "South America/Colombia/COL CARTAGENA  001_resultado.jpg",
-  "South America/Colombia/COL CARTAGENA 005_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 001_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 002_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 004_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 006_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 007_resultado.jpg",
-  "South America/Colombia/COL MEDELLIN 010_resultado.jpg",
-  "South America/Panama/PAN PANAMA 001_resultado.jpg",
-  "South America/Panama/PAN PANAMA 002_resultado.jpg",
-  "South America/Panama/PAN PANAMA 003_resultado.jpg",
-  "South America/Panama/PAN PLAYA BLANCA 002_resultado.jpg",
-  "South America/Panama/PAN PLAYABLANCA 001_resultado.jpg"
+  "Africa/Morocco/MAR 1000_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1001_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1002_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1003_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1004_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1005_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1006_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 1007_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 100_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 101_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 102_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 103_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 104_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 105_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 106_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 108_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 109_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 110_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 113_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 11_resultado_resultado.jpg",
+  "Africa/Morocco/MAR 5000_resultado_resultado.jpg",
+  "Africa/Morocco/MAR MK 1004_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 001_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 002_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 003_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 004_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 005_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 007_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 012_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 10000_resultado_resultado.jpg",
+  "Asia/Cambodia/CAM 1000_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 001_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 002_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 040_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1000_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 100_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 101_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 103_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1060_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1070_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1080_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1090_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 1091_resultado_resultado.jpg",
+  "Asia/Hong Kong/HK 109_resultado_resultado.jpg",
+  "Asia/India/IND 002_resultado_resultado.jpg",
+  "Asia/India/IND 003_resultado_resultado.jpg",
+  "Asia/India/IND 004_resultado_resultado.jpg",
+  "Asia/India/IND 005_resultado_resultado.jpg",
+  "Asia/India/IND 006_resultado_resultado.jpg",
+  "Asia/India/INDIA 001_resultado_resultado.jpg",
+  "Asia/India/INDIA 006_resultado_resultado.jpg",
+  "Asia/India/INDIA 007_resultado_resultado.jpg",
+  "Asia/India/INDIA 008_resultado_resultado.jpg",
+  "Asia/India/INDIA 009_resultado_resultado.jpg",
+  "Asia/India/INDIA 010_resultado_resultado.jpg",
+  "Asia/India/INDIA 011_resultado_resultado.jpg",
+  "Asia/India/INDIA 012_resultado_resultado.jpg",
+  "Asia/India/INDIA 013_resultado_resultado.jpg",
+  "Asia/India/INDIA 014_resultado_resultado.jpg",
+  "Asia/India/INDIA 015_resultado_resultado.jpg",
+  "Asia/India/INDIA 016_resultado_resultado.jpg",
+  "Asia/Japan/JAP 8000_resultado_resultado.jpg",
+  "Asia/Japan/JAP 8001_resultado_resultado.jpg",
+  "Asia/Japan/JAP 8004_resultado_resultado.jpg",
+  "Asia/Japan/JAP 8005_resultado_resultado.jpg",
+  "Asia/Japan/JAP 9000_resultado_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 001_resultado_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 002_resultado_resultado.jpg",
+  "Asia/Japan/JAP KYOTO 003_resultado_resultado.jpg",
+  "Asia/Japan/JAP NARA 001_resultado_resultado.jpg",
+  "Asia/Japan/JAP NARA 002_resultado_resultado.jpg",
+  "Asia/Japan/JAP TK 1000_resultado_resultado.jpg",
+  "Asia/Japan/JAP TOK 400_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 100000_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 1000_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 1001_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 1006_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 1_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 2_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 3_resultado_resultado.jpg",
+  "Asia/Macau/MACAO 4_resultado_resultado.jpg",
+  "Asia/Malaysia/MAL  KL 002_resultado_resultado.jpg",
+  "Asia/Malaysia/MAL KL 100_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 002_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 004_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 010_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 021_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 026_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 029_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 030_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 031_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 032_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 040_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 044_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 046_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 055_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 060_resultado_resultado.jpg",
+  "Asia/Singapore/SIN 40_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 004_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 010_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 014_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 022_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 041_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 101_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 102_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 1050_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 140_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 141_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 142_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 144_resultado_resultado.jpg",
+  "Asia/Thailand/TAI 200000_resultado_resultado.jpg",
+  "Asia/Thailand/TAI PHUKET 010_resultado_resultado.jpg",
+  "Asia/Turkey/TUK ESTAMBUL 008_resultado_resultado.jpg",
+  "Asia/Turkey/TUR 100_resultado_resultado.jpg",
+  "Asia/Turkey/TUR EST 200_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 002_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 003_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 007_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 008_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 009_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 010_resultado_resultado.jpg",
+  "Asia/Turkey/TUR ESTAMBUL 012_resultado_resultado.jpg",
+  "Asia/UAE/EAU 002_resultado_resultado.jpg",
+  "Asia/UAE/EAU 10000_resultado_resultado.jpg",
+  "Asia/UAE/EAU 1000_resultado_resultado.jpg",
+  "Asia/UAE/EAU 10058_resultado_resultado.jpg",
+  "Asia/UAE/EAU 100_resultado_resultado.jpg",
+  "Asia/UAE/EAU 101_resultado_resultado.jpg",
+  "Asia/UAE/EAU 103_resultado_resultado.jpg",
+  "Asia/UAE/EAU 104_resultado_resultado.jpg",
+  "Asia/UAE/EAU 1050_resultado_resultado.jpg",
+  "Asia/UAE/EAU 1051_resultado_resultado.jpg",
+  "Asia/UAE/EAU 2004_resultado_resultado.jpg",
+  "Asia/UAE/EAU ABU 001_resultado_resultado.jpg",
+  "Asia/UAE/EAU DUBAI 001_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 004_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 008_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 009_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 012_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 014_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 016_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 017_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 019_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 021_resultado_resultado.jpg",
+  "Asia/Vietnam/VIE 100000_resultado_resultado.jpg",
+  "Asia/Vietnam/VIT 002_resultado_resultado.jpg",
+  "Asia/Vietnam/VIT 020_resultado_resultado.jpg",
+  "Asia/Vietnam/VIT HANOI 001_resultado_resultado.jpg",
+  "Europe/Austria/AUS 001_resultado_resultado.jpg",
+  "Europe/Austria/AUS 002_resultado_resultado.jpg",
+  "Europe/Austria/AUS 003_resultado_resultado.jpg",
+  "Europe/Austria/AUS 004_resultado_resultado.jpg",
+  "Europe/France/FRA 001_resultado_resultado.jpg",
+  "Europe/France/FRA 002_resultado_resultado.jpg",
+  "Europe/France/FRA 003_resultado_resultado.jpg",
+  "Europe/France/FRA 004_resultado_resultado.jpg",
+  "Europe/France/FRA 005_resultado_resultado.jpg",
+  "Europe/France/FRA 1000_resultado_resultado.jpg",
+  "Europe/France/FRA DISNEY 002_resultado_resultado.jpg",
+  "Europe/France/FRA DISNEY 003_resultado_resultado.jpg",
+  "Europe/France/FRA DISNEY 01_resultado_resultado.jpg",
+  "Europe/France/FRA PAR 099_resultado_resultado.jpg",
+  "Europe/France/FRA PARIS 001_resultado_resultado.jpg",
+  "Europe/France/FRA PARIS 003_resultado_resultado.jpg",
+  "Europe/France/FRA PARIS 004_resultado_resultado.jpg",
+  "Europe/France/FRA PARIS 005_resultado_resultado.jpg",
+  "Europe/France/FRA PARIS 006_resultado_resultado.jpg",
+  "Europe/Germany/ALE 001_resultado_resultado.jpg",
+  "Europe/Germany/ALE 1000001_resultado_resultado.jpg",
+  "Europe/Germany/ALE 1000002_resultado_resultado.jpg",
+  "Europe/Germany/ALE 100000_resultado_resultado.jpg",
+  "Europe/Germany/ALE 10000_resultado_resultado.jpg",
+  "Europe/Germany/ALE 100_resultado_resultado.jpg",
+  "Europe/Germany/ALE 101_resultado_resultado.jpg",
+  "Europe/Germany/ALE 102_resultado_resultado.jpg",
+  "Europe/Germany/ALE 4000_resultado_resultado.jpg",
+  "Europe/Germany/ALE 4001_resultado_resultado.jpg",
+  "Europe/Germany/ALE 400_resultado_resultado.jpg",
+  "Europe/Germany/ALE 401_resultado_resultado.jpg",
+  "Europe/Germany/ALE 403_resultado_resultado.jpg",
+  "Europe/Germany/ALE 406_resultado_resultado.jpg",
+  "Europe/Germany/ALE 5001_resultado_resultado.jpg",
+  "Europe/Germany/ALE 5003_resultado_resultado.jpg",
+  "Europe/Germany/ALE 5004_resultado_resultado.jpg",
+  "Europe/Germany/ALE 500_resultado_resultado.jpg",
+  "Europe/Germany/ALE 501_resultado_resultado.jpg",
+  "Europe/Germany/ALE 502_resultado_resultado.jpg",
+  "Europe/Germany/ALE 503_resultado_resultado.jpg",
+  "Europe/Germany/ALE 504_resultado_resultado.jpg",
+  "Europe/Germany/ALE 505_resultado_resultado.jpg",
+  "Europe/Germany/ALE 506_resultado_resultado.jpg",
+  "Europe/Germany/ALE 507_resultado_resultado.jpg",
+  "Europe/Germany/ALE 508_resultado_resultado.jpg",
+  "Europe/Germany/ALE FRANKFURT 001_resultado_resultado.jpg",
+  "Europe/Greece/GRE 10000_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATE 100_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATE 200_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 001_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 002_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 003_resultado_resultado.jpg",
+  "Europe/Greece/GRE ATENAS 004_resultado_resultado.jpg",
+  "Europe/Greece/GRE MIK 100_resultado_resultado.jpg",
+  "Europe/Greece/GRE MIK 102_resultado_resultado.jpg",
+  "Europe/Greece/GRE MIK 500_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 010_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 500_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 501_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 502_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 503_resultado_resultado.jpg",
+  "Europe/Greece/GRE SAN 505_resultado_resultado.jpg",
+  "Europe/Greece/GRE SANTORINI 001_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 002_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 003_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 004_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 005_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 006_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 007_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 008_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 009_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 010_resultado_resultado.jpg",
+  "Europe/Ireland/IRL 011_resultado_resultado.jpg",
+  "Europe/Ireland/IRL_resultado_resultado.jpg",
+  "Europe/Italy/ITA 1000_resultado_resultado.jpg",
+  "Europe/Italy/ITA ROMA 001_resultado_resultado.jpg",
+  "Europe/Portugal/POR 10000_resultado_resultado.jpg",
+  "Europe/Portugal/POR 5000_resultado_resultado.jpg",
+  "Europe/Portugal/POR 9000_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 103_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 140_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 500_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 600_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 601_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 602_resultado_resultado.jpg",
+  "Europe/Portugal/POR AVE 603_resultado_resultado.jpg",
+  "Europe/Portugal/POR LISBOA 001_resultado_resultado.jpg",
+  "Europe/Portugal/POR NAZARE 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP 100000_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 010_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 1000_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 103_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 105_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 200_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 300_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 400_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVI 401_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 004_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10000 (2)_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10000_resultado_resultado.jpg",
+  "Europe/Spain/ESP AVILA 10001_resultado_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP BENIDORM 006_resultado_resultado.jpg",
+  "Europe/Spain/ESP BIL  040_resultado_resultado.jpg",
+  "Europe/Spain/ESP BIL 041_resultado_resultado.jpg",
+  "Europe/Spain/ESP BIL 042_resultado_resultado.jpg",
+  "Europe/Spain/ESP BIL 101_resultado_resultado.jpg",
+  "Europe/Spain/ESP BILBAO 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP BURGOS 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP BURGOS 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP CANTABRIA 004_resultado_resultado.jpg",
+  "Europe/Spain/ESP CUE 1_resultado_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP CUENCA 004_resultado_resultado.jpg",
+  "Europe/Spain/ESP GIJ 000_resultado_resultado.jpg",
+  "Europe/Spain/ESP GUA 004_resultado_resultado.jpg",
+  "Europe/Spain/ESP GUADALAJARA 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP LA PALMAS 007_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 100000_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 1000_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 1001_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 1008_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 120_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAN 121_resultado_resultado.jpg",
+  "Europe/Spain/ESP LANZAROTE 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP LAS PALMAS 006_resultado_resultado.jpg",
+  "Europe/Spain/ESP MA 2001_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 004_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 005_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 006_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 012_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 018_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 021_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 022_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 023_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 024_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 025_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 026_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 030_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 031_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 032_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 10000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 10001_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 10004_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 1000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 1001_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 1008_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 100_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 1010_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 1011_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 102_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 103_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 104_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 105_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 109_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 110_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 113_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 115_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 117_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 12_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 14_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 200_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 2000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 20000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 200004_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 20002_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 20003_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 2002_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 2003_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 2004_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 2005_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 201_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 300_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 3000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 3001_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 3004_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 301_resultado_resultado.jpg",
+  "Europe/Spain/ESP MAD 8000_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 015_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 016_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 017_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 020_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 021_resultado_resultado.jpg",
+  "Europe/Spain/ESP MADRID 19_resultado_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 1_resultado_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 2_resultado_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 3_resultado_resultado.jpg",
+  "Europe/Spain/ESP MENORCA 4_resultado_resultado.jpg",
+  "Europe/Spain/ESP PALMA 1_resultado_resultado.jpg",
+  "Europe/Spain/ESP SALAMANCA 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP TOL 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP VAL 10000_resultado_resultado.jpg",
+  "Europe/Spain/ESP VAL 101_resultado_resultado.jpg",
+  "Europe/Spain/ESP VAL 102_resultado_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 002_resultado_resultado.jpg",
+  "Europe/Spain/ESP VALENCIA 003_resultado_resultado.jpg",
+  "Europe/Spain/ESP ZAM 001_resultado_resultado.jpg",
+  "Europe/Spain/ESP ZAM 100_resultado_resultado.jpg",
+  "Europe/Spain/ESP ZAM 101_resultado_resultado.jpg",
+  "Europe/Spain/ESP ZAM 400_resultado_resultado.jpg",
+  "Europe/Spain/ESP ZAM 401_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 100_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 1000_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 101_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 104_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 120_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 121_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK LON 122_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK 100000_resultado_resultado.jpg",
+  "Europe/United Kingdom/UK1000001_resultado_resultado.jpg",
+  "North America/USA/USA NY 010_resultado_resultado.jpg",
+  "North America/USA/USA NY 053_resultado_resultado.jpg",
+  "North America/USA/USA NY 055_resultado_resultado.jpg",
+  "North America/USA/USA NY 056_resultado_resultado.jpg",
+  "North America/USA/USA NY 057_resultado_resultado.jpg",
+  "North America/USA/USA NY 059_resultado_resultado.jpg",
+  "North America/USA/USA NY 060_resultado_resultado.jpg",
+  "North America/USA/USA NY 070_resultado_resultado.jpg",
+  "South America/Colombia/COL 10000_resultado_resultado.jpg",
+  "South America/Colombia/COL CARTAGENA  001_resultado_resultado.jpg",
+  "South America/Colombia/COL CARTAGENA 005_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 001_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 002_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 004_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 006_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 007_resultado_resultado.jpg",
+  "South America/Colombia/COL MEDELLIN 010_resultado_resultado.jpg",
+  "South America/Panama/PAN PANAMA 001_resultado_resultado.jpg",
+  "South America/Panama/PAN PANAMA 002_resultado_resultado.jpg",
+  "South America/Panama/PAN PANAMA 003_resultado_resultado.jpg",
+  "South America/Panama/PAN PLAYA BLANCA 002_resultado_resultado.jpg",
+  "South America/Panama/PAN PLAYABLANCA 001_resultado_resultado.jpg"
 ];
-/* ===================================================================== */
 
 const BASE = "";
-
 const photos = PHOTOS.map(path => {
   const [continent, country, file] = path.split("/");
   const title = file.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
@@ -635,7 +633,6 @@ const photos = PHOTOS.map(path => {
 
 let selContinent = "All", selCountry = "All countries", visible = [], current = 0;
 
-/* ---------- LANGUAGES (EN / ES) ---------- */
 const I18N = {
   en: {
     title: "Alberto JC · Architectural & Landscape Photography",
@@ -744,7 +741,6 @@ document.addEventListener("keydown", e => {
   if(e.key === "ArrowRight") openLb(current + 1);
 });
 
-/* ---------- CONTACT FORM (sent to your email through FormSubmit) ---------- */
 const FORM_ENDPOINT = "https://formsubmit.co/ajax/moments.ajc@gmail.com";
 $("contact-form").addEventListener("submit", async e => {
   e.preventDefault();
