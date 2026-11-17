@@ -695,11 +695,8 @@
       </div>
     </div>
     <div>
-      <form class="contact-form" id="contact-form" action="https://formsubmit.co/moments.ajc@gmail.com" method="POST" novalidate>
+      <form class="contact-form" id="contact-form" novalidate>
         <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <input type="hidden" name="_subject" value="Nuevo mensaje desde albertojc.com">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
         <div class="field"><input type="text" name="name" required autocomplete="name" data-i18n-ph="f_name" placeholder="Nombre y apellidos"></div>
         <div class="field"><input type="tel" name="phone" autocomplete="tel" data-i18n-ph="f_phone" placeholder="Teléfono (opcional)"></div>
         <div class="field"><input type="email" name="email" required autocomplete="email" data-i18n-ph="f_email" placeholder="Correo electrónico"></div>
@@ -1314,51 +1311,58 @@ document.addEventListener("keydown", e => {
   if(e.key === "ArrowRight") openLb(current + 1);
 });
 
-/* ENVÍO DE FORMULARIO CON RESPUESTA VERIFICADA Y FALLBACK NATIVO */
+/* ENVÍO DEL FORMULARIO (Web3Forms) -> llega a moments.ajc@gmail.com */
+const WEB3FORMS_KEY = "fef94930-6ddc-411b-99ec-4723d74dce50";   // <-- aquí va la clave que te llega por correo desde web3forms.com
+
 $("contact-form").addEventListener("submit", async e => {
   e.preventDefault();
   const f = e.target, st = $("form-status"), btn = $("send-btn");
+  const el = n => f.elements[n];
   st.classList.remove("err");
 
-  if (f._honey && f._honey.value !== "") return;
+  if (el("_honey") && el("_honey").value !== "") return;
 
-  if (f.name.value.trim() === "" || f.email.value.trim() === "" || f.message.value.trim() === "" || !f.email.checkValidity()) {
+  if (el("name").value.trim() === "" || el("email").value.trim() === "" || el("message").value.trim() === "" || !el("email").checkValidity()) {
     st.classList.add("err");
     st.textContent = T("f_req");
+    return;
+  }
+
+  if (WEB3FORMS_KEY.indexOf("PEGA") === 0) {
+    st.classList.add("err");
+    st.textContent = "Falta poner la clave del formulario en el código (WEB3FORMS_KEY).";
     return;
   }
 
   btn.disabled = true;
   st.textContent = T("f_sending");
 
-  const formData = new FormData();
-  formData.append("name", f.name.value.trim());
-  formData.append("phone", f.phone.value.trim() || "-");
-  formData.append("email", f.email.value.trim());
-  formData.append("message", f.message.value.trim());
-  formData.append("_replyto", f.email.value.trim());
-  formData.append("_subject", "Nuevo mensaje desde albertojc.com");
-  formData.append("_captcha", "false");
-  formData.append("_template", "table");
-
   try {
-    const res = await fetch("https://formsubmit.co/ajax/moments.ajc@gmail.com", {
+    const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { "Accept": "application/json" },
-      body: formData
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: "Nuevo mensaje desde albertojc.com",
+        from_name: "Web albertojc.com",
+        "Nombre y apellidos": el("name").value.trim(),
+        "Teléfono": el("phone").value.trim() || "-",
+        "Correo": el("email").value.trim(),
+        "Comentarios": el("message").value.trim(),
+        replyto: el("email").value.trim()
+      })
     });
     const data = await res.json();
-    if (res.ok && String(data.success) === "true") {
+    if (res.ok && data.success === true) {
       st.textContent = T("f_ok");
       f.reset();
     } else {
       throw new Error(data.message || "Error");
     }
   } catch (err) {
-    /* Fallback si se ejecuta en local sin servidor HTTP */
+    st.classList.add("err");
     st.textContent = T("f_err");
-    f.target = "_blank";
-    f.submit();
+    console.error("Form error:", err);
   }
   btn.disabled = false;
 });
