@@ -754,7 +754,6 @@ const PHOTOS = [
   "Africa/Morocco/MAR 1003_resultado_resultado.jpg",
   "Africa/Morocco/MAR 1004_resultado_resultado.jpg",
   "Africa/Morocco/MAR 1005_resultado_resultado.jpg",
-  "Africa/Morocco/MAR 1006_resultado_resultado.jpg",
   "Africa/Morocco/MAR 1007_resultado_resultado.jpg",
   "Africa/Morocco/MAR 100_resultado_resultado.jpg",
   "Africa/Morocco/MAR 101_resultado_resultado.jpg",
@@ -836,7 +835,6 @@ const PHOTOS = [
   "Asia/Singapore/SIN 010_resultado_resultado.jpg",
   "Asia/Singapore/SIN 021_resultado_resultado.jpg",
   "Asia/Singapore/SIN 026_resultado_resultado.jpg",
-  "Asia/Singapore/SIN 029_resultado_resultado.jpg",
   "Asia/Singapore/SIN 030_resultado_resultado.jpg",
   "Asia/Singapore/SIN 031_resultado_resultado.jpg",
   "Asia/Singapore/SIN 032_resultado_resultado.jpg",
@@ -1162,7 +1160,6 @@ const THEMES_MAP = {
   "Africa/Morocco/MAR 1003_resultado_resultado.jpg": ["Landscape"],
   "Africa/Morocco/MAR 1004_resultado_resultado.jpg": ["Urban"],
   "Africa/Morocco/MAR 1005_resultado_resultado.jpg": ["Architecture","Geometry","Details"],
-  "Africa/Morocco/MAR 1006_resultado_resultado.jpg": ["Architecture"],
   "Africa/Morocco/MAR 1007_resultado_resultado.jpg": ["Architecture","Geometry","Details"],
   "Africa/Morocco/MAR 100_resultado_resultado.jpg": ["Urban","Details"],
   "Africa/Morocco/MAR 101_resultado_resultado.jpg": ["Sunset"],
@@ -1738,7 +1735,7 @@ function openLb(i){
   const p = visible[current];
   $("lb-img").src = BASE + encodeURI(p.path);
   $("lb-num").textContent = `${pad(current + 1)} / ${pad(visible.length)}`;
-  $("lb-cap").textContent = `${disp(p.country)} — ${disp(p.continent)}`;
+  $("lb-cap").textContent = `${disp(p.country)} — ${disp(p.continent)}` + (location.hash === "#debug" ? ` — ${p.path.split("/").pop()}` : "");   // con #debug al final de la dirección se ve el nombre del archivo
   $("lightbox").classList.add("open");
 }
 const closeLb = () => {
